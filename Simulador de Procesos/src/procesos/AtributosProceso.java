@@ -16,7 +16,18 @@ public class AtributosProceso {
 	public int getIdentificadorProceso() {
 		return identificadorProceso;
 	}
-
+	/* Me parece que el Id debe tener 4 espacios de memoria comprendidos entre 0-9 cada espacio, Ejemplo:
+		public void setIdentificadorProceso(0-9,0-9,0-9,0-9) {
+			concatenaciòn = 0-9,0-9,0-9,0-9; --> 0987
+			this.identificadorProceso = concatenacion;
+		}
+	?????
+	
+	Este recibiria valores comprendidos desde 0 hasta 9999
+	si el aleatorio me da 0 solo seria un valor?
+	Identificador=0; pero deberia ser 0000
+	??
+	*/
 	public void setIdentificadorProceso(int identificadorProceso) {
 		this.identificadorProceso = identificadorProceso;
 	}
