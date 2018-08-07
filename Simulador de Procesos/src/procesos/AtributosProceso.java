@@ -3,17 +3,17 @@ import java.util.Random;
 
 public class AtributosProceso {
 	//Declaracion instancia de variables que definen los atributos de un proceso.
-	private int identificadorProceso;
+	private String identificadorProceso;
 	private int estadoProceso; //Variable 
 	private int prioridadProceso;
-	private int cantidadInstrucciones;
-	private int instrucionBloqueo;
+	private String cantidadInstrucciones;
+	private String instrucionBloqueo;
 	private int eventoBloqueo;
 	//Declaracion instancia de variable para generar numeros aleatorios
 	private Random aleatorio = new Random();
 	
 	
-	public int getIdentificadorProceso() {
+	public String getIdentificadorProceso() {
 		return identificadorProceso;
 	}
 	/* Me parece que el Id debe tener 4 espacios de memoria comprendidos entre 0-9 cada espacio, Ejemplo:
@@ -29,7 +29,14 @@ public class AtributosProceso {
 	??
 	*/
 	public void setIdentificadorProceso(int identificadorProceso) {
-		this.identificadorProceso = identificadorProceso;
+		if(identificadorProceso<=9) {
+			this.identificadorProceso = "000"+Integer.toString(identificadorProceso);
+		}else if(identificadorProceso>9 && identificadorProceso<=99) {
+			this.identificadorProceso = "00"+Integer.toString(identificadorProceso);
+		}else if(identificadorProceso>99 && identificadorProceso<=999) {
+			this.identificadorProceso = "0"+Integer.toString(identificadorProceso);
+		}else
+			this.identificadorProceso = Integer.toString(identificadorProceso);
 	}
 
 	public int getEstadoProceso() {
@@ -48,20 +55,31 @@ public class AtributosProceso {
 		this.prioridadProceso = prioridadProceso;
 	}
 
-	public int getCantidadInstrucciones() {
+	public String getCantidadInstrucciones() {
 		return cantidadInstrucciones;
 	}
 
 	public void setCantidadInstrucciones(int cantidadInstrucciones) {
-		this.cantidadInstrucciones = cantidadInstrucciones;
+		if(cantidadInstrucciones<=9) {
+			this.cantidadInstrucciones = "00"+Integer.toString(cantidadInstrucciones);
+		}else if(cantidadInstrucciones>9 && cantidadInstrucciones<=99) { 
+			this.cantidadInstrucciones = "0"+Integer.toString(cantidadInstrucciones);
+		}else
+			this.cantidadInstrucciones = Integer.toString(cantidadInstrucciones);
+		
 	}
 
-	public int getInstrucionBloqueo() {
+	public String getInstrucionBloqueo() {
 		return instrucionBloqueo;
 	}
 
 	public void setInstrucionBloqueo(int instrucionBloqueo) {
-		this.instrucionBloqueo = instrucionBloqueo;
+		if(instrucionBloqueo<=9) {
+			this.instrucionBloqueo = "00"+Integer.toString(instrucionBloqueo);
+		}else if(instrucionBloqueo>9 && instrucionBloqueo<=99) {
+			this.instrucionBloqueo = "0"+Integer.toString(instrucionBloqueo);
+		}else
+			this.instrucionBloqueo = Integer.toString(instrucionBloqueo);
 	}
 
 	public int getEventoBloqueo() {
