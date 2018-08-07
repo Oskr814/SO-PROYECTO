@@ -8,5 +8,7 @@ public class GestorProcesos {
 		archivotextoplano.crearArchivoPlano();
 		proceso.nuevoProceso();
 		archivotextoplano.escribirEnArchivoPlano(proceso.toString());
+		
+		System.out.println("hola mundo");
 	}
 }
