@@ -95,7 +95,7 @@ public class AtributosProceso {
 		setEstadoProceso(aleatorio.nextInt(6));
 		setPrioridadProceso(aleatorio.nextInt(4));
 		setCantidadInstrucciones(aleatorio.nextInt(1000));
-		setInstrucionBloqueo(aleatorio.nextInt(getCantidadInstrucciones()));//getCantidadInstrucciones para que la instruccion de bloqueo no sea mayor a la cantidad de instrucciones totales, lo cual no seria correcto
+		setInstrucionBloqueo(aleatorio.nextInt(Integer.valueOf(getCantidadInstrucciones())));//getCantidadInstrucciones para que la instruccion de bloqueo no sea mayor a la cantidad de instrucciones totales, lo cual no seria correcto
 		switch(aleatorio.nextInt(2)){
 			case 0:
 				setEventoBloqueo(3);
