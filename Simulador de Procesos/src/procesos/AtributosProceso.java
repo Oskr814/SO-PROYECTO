@@ -12,6 +12,10 @@ public class AtributosProceso {
 	//Declaracion instancia de variable para generar numeros aleatorios
 	private Random aleatorio = new Random();
 	
+	public AtributosProceso(String ID){
+		this.identificadorProceso = ID;//Que ID sea enviado para llevar control de los ID utilizados y evitar repeticiones
+		nuevoProceso();//Creacion del proceso al instaciar la clase
+	}
 	
 	public String getIdentificadorProceso() {
 		return identificadorProceso;
@@ -28,6 +32,10 @@ public class AtributosProceso {
 	Identificador=0; pero deberia ser 0000
 	??
 	*/
+	
+	/*
+	 * Lo oculté porque quiero probar las listas, en caso de no funcionar mi idea, volvemos a esto ok?
+	 * 
 	public void setIdentificadorProceso(int identificadorProceso) {
 		if(identificadorProceso<=9) {
 			this.identificadorProceso = "000"+Integer.toString(identificadorProceso);
@@ -38,7 +46,7 @@ public class AtributosProceso {
 		}else
 			this.identificadorProceso = Integer.toString(identificadorProceso);
 	}
-
+*/
 	public int getEstadoProceso() {
 		return estadoProceso;
 	}
@@ -91,11 +99,11 @@ public class AtributosProceso {
 	}
 
 	public void nuevoProceso() {
-		setIdentificadorProceso(aleatorio.nextInt(10000));
+		int CantidadInstrucciones = aleatorio.nextInt(10000);// atributo para que no entre en confilicto el "setCantidadInstrucciones" ya que le estamos enviando un String(que no se puede castear a INTEGER).
 		setEstadoProceso(aleatorio.nextInt(6));
 		setPrioridadProceso(aleatorio.nextInt(4));
-		setCantidadInstrucciones(aleatorio.nextInt(1000));
-		setInstrucionBloqueo(aleatorio.nextInt(getCantidadInstrucciones()));//getCantidadInstrucciones para que la instruccion de bloqueo no sea mayor a la cantidad de instrucciones totales, lo cual no seria correcto
+		setCantidadInstrucciones(CantidadInstrucciones);
+		setInstrucionBloqueo(aleatorio.nextInt(CantidadInstrucciones));//getCantidadInstrucciones para que la instruccion de bloqueo no sea mayor a la cantidad de instrucciones totales, lo cual no seria correcto
 		switch(aleatorio.nextInt(2)){
 			case 0:
 				setEventoBloqueo(3);
