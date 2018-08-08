@@ -5,7 +5,7 @@ public class GestorProcesos {
 		int n=0;
 		while(n<=5) {
 
-			ArchivoTexto archivotextoplano = new ArchivoTexto();
+			ArchivoTexto archivotextoplano[] = new ArchivoTexto[10];
 			AtributosProceso proceso = new AtributosProceso();
 			
 			archivotextoplano.crearArchivoPlano();
