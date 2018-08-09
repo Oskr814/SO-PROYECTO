@@ -19,9 +19,11 @@ public class EjecucionListoYEjecucionTerminado {
 				//Aqui se debe mandar a bloqueo
 			}else
 				proceso.SetInstruccionActual();
-				if(proceso.getInstruccionActual() == Integer.parseInt(proceso.getCantidadInstrucciones()))
+				if(proceso.getInstruccionActual() == Integer.parseInt(proceso.getCantidadInstrucciones())) {
 				//Aqui se debe mandar a terminado
 				ejecucionTerminado(proceso);
+				return;
+				}
 		}
 		listaProcesosEjecutando.remove(proceso);
 		listaProcesosListo.add(proceso);
