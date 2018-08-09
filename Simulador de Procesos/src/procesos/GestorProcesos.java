@@ -7,11 +7,11 @@ public class GestorProcesos {
 
 			ArchivoTexto archivotextoplano[] = new ArchivoTexto[10];
 			AtributosProceso proceso = new AtributosProceso("0003");
-			
+			/*
 			archivotextoplano.crearArchivoPlano();
 			proceso.nuevoProceso();
 			archivotextoplano.escribirEnArchivoPlano(proceso.toString());
-			
+			*/
 			System.out.println("proceso #"+n);
 			
 			n++;

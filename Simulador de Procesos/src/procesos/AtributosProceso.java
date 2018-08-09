@@ -10,6 +10,8 @@ public class AtributosProceso {
 	private String instrucionBloqueo;
 	private int eventoBloqueo;
 	private int instruccionActual = 0;
+	private int ciclosBloqueoRecorrido = 0;//lleva la cuenta de cuantos ciclos tiene de estar el "bloqueo"
+	
 	//Declaracion instancia de variable para generar numeros aleatorios
 	private Random aleatorio = new Random();
 	
@@ -111,13 +113,12 @@ public class AtributosProceso {
 		int CantidadInstrucciones = aleatorio.nextInt(10000);// atributo para que no entre en confilicto el "setCantidadInstrucciones" ya que le estamos enviando un String(que no se puede castear a INTEGER).
 		setEstadoProceso(aleatorio.nextInt(6));
 		setPrioridadProceso(aleatorio.nextInt(4));
-<<<<<<< HEAD
+
 		setCantidadInstrucciones(CantidadInstrucciones);
 		setInstrucionBloqueo(aleatorio.nextInt(CantidadInstrucciones));//getCantidadInstrucciones para que la instruccion de bloqueo no sea mayor a la cantidad de instrucciones totales, lo cual no seria correcto
-=======
+
 		setCantidadInstrucciones(aleatorio.nextInt(1000));
 		setInstrucionBloqueo(aleatorio.nextInt(Integer.valueOf(getCantidadInstrucciones())));//getCantidadInstrucciones para que la instruccion de bloqueo no sea mayor a la cantidad de instrucciones totales, lo cual no seria correcto
->>>>>>> 00d9cff461fb7cca20080782a2d18cc95441f847
 		switch(aleatorio.nextInt(2)){
 			case 0:
 				setEventoBloqueo(3);

@@ -12,7 +12,7 @@ public class Escritura_y_Lectura {
 	private ArrayList<AtributosProceso> listaProcesosListo  = new ArrayList<AtributosProceso>();
 	private ArrayList<AtributosProceso> listaProcesosEjecutando = new ArrayList<AtributosProceso>();
 	private ArrayList<AtributosProceso> listaProcesosBloqueado = new ArrayList<AtributosProceso>();
-	private ArrayList<AtributosProceso> listaProcesosNuevo = new ArrayList<AtributosProceso>();
+	private ArrayList<AtributosProceso> listaProcesosNuevo = new ArrayList<AtributosProceso>(10);
 	private ArrayList<AtributosProceso> listaProcesosSaliente = new ArrayList<AtributosProceso>();
 	private Random random = new Random();
 	
@@ -33,7 +33,7 @@ public class Escritura_y_Lectura {
 	
 	public void procesoNuevo() {
 		int IndiceUtilizado = random.nextInt(listaID_Utilizables.size());//sacamos el numero al azar para la creacion de procesos, que será el indice de la lista disponible
-		int ID_proceso =0;
+		int ID_proceso = 0;
 		listaProcesosNuevo.add(new AtributosProceso(listaID_Utilizables.get(IndiceUtilizado)));//sacamos el String, con las regulaciones necesarias para mandarlo como parametro al constructor de "AtributosProceso"
 		
 		for(int i=0 ; i<listaProcesosNuevo.size() ; i++) {
@@ -66,10 +66,36 @@ public class Escritura_y_Lectura {
 	}
 	*/
 	
-	public void procesoListo() {
-		
+	public void estadoEjecucion_Bloqueado(String instruccionBloqueo, String ID) {//funcion que revisará si el proceso llego a la instruccion de bloqueo y hace la transicion 
+		if(listaProcesosEjecutando.get(buscarIndice(ID, listaProcesosEjecutando)).getInstrucionBloqueo() == instruccionBloqueo) {
+			listaProcesosBloqueado.add(listaProcesosEjecutando.get(buscarIndice(ID, listaProcesosEjecutando)));
+			listaProcesosEjecutando.remove(buscarIndice(ID, listaProcesosEjecutando));
+		}
 	}
 	
 	
+	public void estadoBloqueado_Listo(int cantidadCiclos, String ID) {
+		if(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).getEventoBloqueo() == 3) {
+			if(cantidadCiclos == 13) {
+				listaProcesosListo.add(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)));
+				listaProcesosBloqueado.remove(buscarIndice(ID, listaProcesosBloqueado));
+			}
+		}else {
+			if(cantidadCiclos == 27) {
+				listaProcesosListo.add(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)));
+				listaProcesosBloqueado.remove(buscarIndice(ID, listaProcesosBloqueado));
+			}
+		}
+	}
+	
+	
+	public int buscarIndice (String ID, ArrayList<AtributosProceso> lista) {//funcion que nos retornará el indice de la lista donde está el proceso con el respectivo ID
+		for(int i=0 ; i<lista.size() ; i++) {
+			if(lista.get(i).getIdentificadorProceso() == ID) {
+				return i;
+			}
+		}
+		return -1;
+	}
 
 }
