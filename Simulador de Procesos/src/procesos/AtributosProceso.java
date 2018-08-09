@@ -6,6 +6,7 @@ public class AtributosProceso {
 	private String identificadorProceso;
 	private int estadoProceso; //Variable 
 	private int prioridadProceso;
+	private int instruccionesLeidas = 0;
 	private String cantidadInstrucciones;
 	private String instrucionBloqueo;
 	private int eventoBloqueo;
