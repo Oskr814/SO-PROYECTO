@@ -6,10 +6,10 @@ public class GestorProcesos {
 		while(n<=5) {
 
 			ArchivoTexto archivotextoplano[] = new ArchivoTexto[10];
-			AtributosProceso proceso = new AtributosProceso();
+			AtributosProceso proceso = new AtributosProceso("0003");
 			
 			archivotextoplano.crearArchivoPlano();
-			//proceso.nuevoProceso();
+			proceso.nuevoProceso();
 			archivotextoplano.escribirEnArchivoPlano(proceso.toString());
 			
 			System.out.println("proceso #"+n);
