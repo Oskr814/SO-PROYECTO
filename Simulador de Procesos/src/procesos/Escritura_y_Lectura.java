@@ -31,7 +31,7 @@ public class Escritura_y_Lectura {
 		}
 	}
 	
-	public void procesoNuevo() {
+	public void procesoNuevo () {
 		int IndiceUtilizado = random.nextInt(listaID_Utilizables.size());//sacamos el numero al azar para la creacion de procesos, que será el indice de la lista disponible
 		int ID_proceso = 0;
 		listaProcesosNuevo.add(new AtributosProceso(listaID_Utilizables.get(IndiceUtilizado)));//sacamos el String, con las regulaciones necesarias para mandarlo como parametro al constructor de "AtributosProceso"
@@ -48,8 +48,9 @@ public class Escritura_y_Lectura {
 			listaProcesosListo.add(listaProcesosNuevo.get(ID_proceso));//mandamos el proceso a la lista de "Listos"
 			listaProcesosNuevo.remove(IndiceUtilizado);//eliminamos el proceso que pasó a "listos".
 		}
-		
 	}
+
+	
 	
 	/*
 	public void ordenarPrioridades() {//clasificamos los procesos.
@@ -65,8 +66,44 @@ public class Escritura_y_Lectura {
 		}
 	}
 	*/
+	/*
+	 * 
+	 * 
+	 * Esto se supone irá en el gestor de procesos
+	 *
+	 *
+	 *
+	 *
+	int n=0;
+	while (true) {
+		while (n <= 10) {
+			if(listaProcesosNuevo.size() <=  10){
+				procesoNuevo();
+			}else{
+				break;
+			{
+		}
+		
+		for(){
+			
+		}
+		
+	}
 	
-	public void estadoEjecucion_Bloqueado(String instruccionBloqueo, String ID) {//funcion que revisará si el proceso llego a la instruccion de bloqueo y hace la transicion 
+	
+	
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	
+	
+	public void estadoEjecucion_Bloqueado (String instruccionBloqueo, String ID) {
+		//funcion que revisará si el proceso llego a la instruccion de bloqueo y hace la transicion 
 		if(listaProcesosEjecutando.get(buscarIndice(ID, listaProcesosEjecutando)).getInstrucionBloqueo() == instruccionBloqueo) {
 			listaProcesosBloqueado.add(listaProcesosEjecutando.get(buscarIndice(ID, listaProcesosEjecutando)));
 			listaProcesosEjecutando.remove(buscarIndice(ID, listaProcesosEjecutando));
@@ -89,7 +126,8 @@ public class Escritura_y_Lectura {
 	}
 	
 	
-	public int buscarIndice (String ID, ArrayList<AtributosProceso> lista) {//funcion que nos retornará el indice de la lista donde está el proceso con el respectivo ID
+	public int buscarIndice (String ID, ArrayList<AtributosProceso> lista) {
+		//funcion que nos retornará el indice de la lista donde está el proceso con el respectivo ID
 		for(int i=0 ; i<lista.size() ; i++) {
 			if(lista.get(i).getIdentificadorProceso() == ID) {
 				return i;
