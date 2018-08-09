@@ -9,6 +9,7 @@ public class AtributosProceso {
 	private String cantidadInstrucciones;
 	private String instrucionBloqueo;
 	private int eventoBloqueo;
+	private int instruccionActual = 0;
 	//Declaracion instancia de variable para generar numeros aleatorios
 	private Random aleatorio = new Random();
 	
@@ -19,6 +20,14 @@ public class AtributosProceso {
 	
 	public String getIdentificadorProceso() {
 		return identificadorProceso;
+	}
+	
+	public void SetInstruccionActual() {
+		instruccionActual++;
+	}
+	
+	public int getInstruccionActual() {
+		return instruccionActual;
 	}
 	/* Me parece que el Id debe tener 4 espacios de memoria comprendidos entre 0-9 cada espacio, Ejemplo:
 		public void setIdentificadorProceso(0-9,0-9,0-9,0-9) {
