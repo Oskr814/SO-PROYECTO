@@ -36,7 +36,7 @@ public class Escritura_y_Lectura {
 			listaProcesosNuevo.add(new AtributosProceso(listaID_Utilizables.get(IndiceUtilizado)));//sacamos el String, con las regulaciones necesarias para mandarlo como parametro al constructor de "AtributosProceso"
 			System.out.println("se ha creado un proceso: " + listaProcesosNuevo.get(buscarProceso(listaID_Utilizables.get(IndiceUtilizado), listaProcesosNuevo)).toString() + "---> NUEVO");
 			listaID_Utilizables.remove(IndiceUtilizado);//Eliminamos el item para evitar que se repita nuestro ID que debe ser único
-			//actualizarInformacion();
+			
 		}
 	}
 	
@@ -50,7 +50,7 @@ public class Escritura_y_Lectura {
 				System.out.println("se ha pasado el proceso: " +  listaProcesosListo.get(buscarProceso(listaProcesosNuevo.get(i).getIdentificadorProceso(), listaProcesosListo)).toString() + "----> 'NUEVO' a 'LISTO'");
 				listaProcesosNuevo.remove(i);//removemos el proceso que se trasladó
 				i=-1;//reiniciamos el indice para no
-				//actualizarInformacion();
+				
 			}else {
 				if (hayPrioridad(2, listaProcesosNuevo)) {//se buscarán los procesos de media prioridad y si existen entrará al 'for' 
 					i = buscarPrioridad(2, listaProcesosNuevo);
@@ -59,7 +59,7 @@ public class Escritura_y_Lectura {
 					System.out.println("se ha pasado el proceso: " +  listaProcesosListo.get(buscarProceso(listaProcesosNuevo.get(i).getIdentificadorProceso(), listaProcesosListo)).toString() + "----> 'NUEVO' a 'LISTO'");
 					listaProcesosNuevo.remove(i);
 					i=-1;
-					//actualizarInformacion();
+					
 				}else {
 					if (hayPrioridad(3, listaProcesosNuevo)) {
 						i = buscarPrioridad(3, listaProcesosNuevo);
@@ -68,7 +68,7 @@ public class Escritura_y_Lectura {
 						System.out.println("se ha pasado el proceso: " +  listaProcesosListo.get(buscarProceso(listaProcesosNuevo.get(i).getIdentificadorProceso(), listaProcesosListo)).toString() + "----> 'NUEVO' a 'LISTO'");
 						listaProcesosNuevo.remove(i);
 						i=-1;
-						//actualizarInformacion();
+						
 					}else {
 						procesoNuevo();
 					}
@@ -87,9 +87,10 @@ public class Escritura_y_Lectura {
 				listaProcesosEjecutando.add(listaProcesosListo.get(i));//añadimos el proceso a la lista de "EJECUCION"
 				listaProcesosEjecutando.get(buscarProceso(listaProcesosListo.get(i).getIdentificadorProceso(), listaProcesosEjecutando)).setEstadoProceso(2);;
 				System.out.println("se ha pasado el proceso: " +  listaProcesosEjecutando.get(buscarProceso(listaProcesosListo.get(i).getIdentificadorProceso(), listaProcesosEjecutando)).toString() + "----> 'LISTO' a 'EJECUCION'");
+				archivo.ElimiarArchivoPlano(listaProcesosListo.get(i));
 				listaProcesosListo.remove(i);//removemos el proceso de LISTO
 				i = -1;//reiniciamos el contador
-				//actualizarInformacion();
+				
 			}else {
 				if (hayPrioridad(2, listaProcesosListo)) {//Corrobora si existen procesos con esa maxima prioridad en la lista para pasarlos a "EJECUCION"
 					i = buscarPrioridad(2, listaProcesosListo);//almacena el indice del elemento de la lista con la prioridad buscada
@@ -98,7 +99,7 @@ public class Escritura_y_Lectura {
 					System.out.println("se ha pasado el proceso: " +  listaProcesosEjecutando.get(buscarProceso(listaProcesosListo.get(i).getIdentificadorProceso(), listaProcesosEjecutando)).toString() + "----> 'LISTO' a 'EJECUCION'");
 					listaProcesosListo.remove(i);//removemos el proceso de LISTO
 					i = -1;//reiniciamos el contador
-					//actualizarInformacion();
+					
 				}else {
 					if (hayPrioridad(3, listaProcesosListo)) {//Corrobora si existen procesos con esa maxima prioridad en la lista para pasarlos a "EJECUCION"
 						i = buscarPrioridad(3, listaProcesosListo);//almacena el indice del elemento de la lista con la prioridad buscada
@@ -109,7 +110,7 @@ public class Escritura_y_Lectura {
 						
 						listaProcesosListo.remove(i);//removemos el proceso de LISTO
 						i = -1;//reiniciamos el contador
-						//actualizarInformacion();
+						
 					}else {
 						estadoNuevo_Listo();
 					}
@@ -265,7 +266,7 @@ public class Escritura_y_Lectura {
 	}
 	
 	
-	/*
+	
 	public void actualizarInformacion() {
 		if(listaProcesosNuevo.size()>0)
 		archivo.escrbirArchivoPlanoEstado(listaProcesosNuevo);
@@ -278,7 +279,7 @@ public class Escritura_y_Lectura {
 		if(listaProcesosTerminado.size()>0)
 		archivo.escrbirArchivoPlanoEstado(listaProcesosTerminado);
 	}
-	*/
+	
 //--------------------------------------------------------	
 
 }
