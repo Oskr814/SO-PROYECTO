@@ -48,6 +48,7 @@ public class Escritura_y_Lectura {
 				listaProcesosListo.add(listaProcesosNuevo.get(i));//Añade a la lista"LISTO" el proceso desde "NUEVO"
 				listaProcesosListo.get(buscarProceso(listaProcesosNuevo.get(i).getIdentificadorProceso(), listaProcesosListo)).setEstadoProceso(1);;
 				System.out.println("se ha pasado el proceso: " +  listaProcesosListo.get(buscarProceso(listaProcesosNuevo.get(i).getIdentificadorProceso(), listaProcesosListo)).toString() + "----> a  'LISTO'");
+				archivo.ElimiarArchivoPlano(listaProcesosNuevo.get(i));
 				listaProcesosNuevo.remove(i);//removemos el proceso que se trasladó
 				i=-1;//reiniciamos el indice para no
 				actualizarInformacion();
@@ -57,6 +58,7 @@ public class Escritura_y_Lectura {
 					listaProcesosListo.add(listaProcesosNuevo.get(i));
 					listaProcesosListo.get(buscarProceso(listaProcesosNuevo.get(i).getIdentificadorProceso(), listaProcesosListo)).setEstadoProceso(1);;
 					System.out.println("se ha pasado el proceso: " +  listaProcesosListo.get(buscarProceso(listaProcesosNuevo.get(i).getIdentificadorProceso(), listaProcesosListo)).toString() + "----> a  'LISTO'");
+					archivo.ElimiarArchivoPlano(listaProcesosNuevo.get(i));
 					listaProcesosNuevo.remove(i);
 					i=-1;
 					actualizarInformacion();
@@ -66,6 +68,7 @@ public class Escritura_y_Lectura {
 						listaProcesosListo.add(listaProcesosNuevo.get(i));
 						listaProcesosListo.get(buscarProceso(listaProcesosNuevo.get(i).getIdentificadorProceso(), listaProcesosListo)).setEstadoProceso(1);;
 						System.out.println("se ha pasado el proceso: " +  listaProcesosListo.get(buscarProceso(listaProcesosNuevo.get(i).getIdentificadorProceso(), listaProcesosListo)).toString() + "----> a  'LISTO'");
+						archivo.ElimiarArchivoPlano(listaProcesosNuevo.get(i));
 						listaProcesosNuevo.remove(i);
 						i=-1;
 						actualizarInformacion();
@@ -87,6 +90,7 @@ public class Escritura_y_Lectura {
 				listaProcesosEjecutando.add(listaProcesosListo.get(i));//añadimos el proceso a la lista de "EJECUCION"
 				listaProcesosEjecutando.get(buscarProceso(listaProcesosListo.get(i).getIdentificadorProceso(), listaProcesosEjecutando)).setEstadoProceso(2);;
 				System.out.println("se ha pasado el proceso: " +  listaProcesosEjecutando.get(buscarProceso(listaProcesosListo.get(i).getIdentificadorProceso(), listaProcesosEjecutando)).toString() + "----> a  'EJECUTANDO'");
+				archivo.ElimiarArchivoPlano(listaProcesosListo.get(i));
 				listaProcesosListo.remove(i);//removemos el proceso de LISTO
 				i = -1;//reiniciamos el contador
 				actualizarInformacion();
@@ -96,6 +100,7 @@ public class Escritura_y_Lectura {
 					listaProcesosEjecutando.add(listaProcesosListo.get(i));//añadimos el proceso a la lista de "EJECUCION"
 					listaProcesosEjecutando.get(buscarProceso(listaProcesosListo.get(i).getIdentificadorProceso(), listaProcesosEjecutando)).setEstadoProceso(2);;
 					System.out.println("se ha pasado el proceso: " +  listaProcesosEjecutando.get(buscarProceso(listaProcesosListo.get(i).getIdentificadorProceso(), listaProcesosEjecutando)).toString() + "----> a  'EJECUTANDO'");
+					archivo.ElimiarArchivoPlano(listaProcesosListo.get(i));
 					listaProcesosListo.remove(i);//removemos el proceso de LISTO
 					i = -1;//reiniciamos el contador
 					actualizarInformacion();
@@ -106,7 +111,7 @@ public class Escritura_y_Lectura {
 
 						listaProcesosEjecutando.get(buscarProceso(listaProcesosListo.get(i).getIdentificadorProceso(), listaProcesosEjecutando)).setEstadoProceso(2);;
 						System.out.println("se ha pasado el proceso: " +  listaProcesosEjecutando.get(buscarProceso(listaProcesosListo.get(i).getIdentificadorProceso(), listaProcesosEjecutando)).toString() + "----> a  'EJECUTANDO'");
-						
+						archivo.ElimiarArchivoPlano(listaProcesosListo.get(i));
 						listaProcesosListo.remove(i);//removemos el proceso de LISTO
 						i = -1;//reiniciamos el contador
 						actualizarInformacion();
@@ -254,7 +259,7 @@ public class Escritura_y_Lectura {
 		
 		}
 	}
-<<<<<<< HEAD
+
 	
 	public void actualizarInformacion() {
 		if(listaProcesosNuevo.size()>0)
@@ -268,8 +273,8 @@ public class Escritura_y_Lectura {
 		if(listaProcesosTerminado.size()>0)
 		archivo.escrbirArchivoPlanoEstado(listaProcesosTerminado);
 	}
-=======
+
 //--------------------------------------------------------	
 	
->>>>>>> 7a8eaccf9f08afae905690dba186426d5775d1a5
+
 }
