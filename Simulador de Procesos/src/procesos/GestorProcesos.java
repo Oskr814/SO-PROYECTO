@@ -6,7 +6,7 @@ public class GestorProcesos {
 		
 		Escritura_y_Lectura gestor = new Escritura_y_Lectura();
 		
-		while(n<=5) {
+		while(n<=1) {
 			
 			gestor.procesoNuevo();
 			

@@ -10,7 +10,7 @@ public class Escritura_y_Lectura {
 	private ArrayList<AtributosProceso> listaProcesosBloqueado = new ArrayList<AtributosProceso>();
 	private ArrayList<AtributosProceso> listaProcesosNuevo = new ArrayList<AtributosProceso>(10);
 	private ArrayList<AtributosProceso> listaProcesosTerminado = new ArrayList<AtributosProceso>();
-	
+	public ArchivoTexto archivo = new ArchivoTexto();
 	private Random random = new Random();
 	
 	private int maximoProcesos = 5;
@@ -34,10 +34,9 @@ public class Escritura_y_Lectura {
 		while(listaProcesosNuevo.size() < maximoProcesos) {
 			int IndiceUtilizado = random.nextInt(listaID_Utilizables.size());//sacamos el numero al azar para la creacion de procesos, que será el indice de la lista disponible
 			listaProcesosNuevo.add(new AtributosProceso(listaID_Utilizables.get(IndiceUtilizado)));//sacamos el String, con las regulaciones necesarias para mandarlo como parametro al constructor de "AtributosProceso"
-			
 			System.out.println("se ha creado un proceso: " + listaProcesosNuevo.get(buscarProceso(listaID_Utilizables.get(IndiceUtilizado), listaProcesosNuevo)).toString() + "---> NUEVO");
 			listaID_Utilizables.remove(IndiceUtilizado);//Eliminamos el item para evitar que se repita nuestro ID que debe ser único
-			
+			actualizarInformacion();
 		}
 	}
 	
@@ -51,6 +50,7 @@ public class Escritura_y_Lectura {
 				System.out.println("se ha pasado el proceso: " +  listaProcesosListo.get(buscarProceso(listaProcesosNuevo.get(i).getIdentificadorProceso(), listaProcesosListo)).toString() + "----> a  'LISTO'");
 				listaProcesosNuevo.remove(i);//removemos el proceso que se trasladó
 				i=-1;//reiniciamos el indice para no
+				actualizarInformacion();
 			}else {
 				if (hayPrioridad(2, listaProcesosNuevo)) {
 					i = buscarPrioridad(2, listaProcesosNuevo);
@@ -59,6 +59,7 @@ public class Escritura_y_Lectura {
 					System.out.println("se ha pasado el proceso: " +  listaProcesosListo.get(buscarProceso(listaProcesosNuevo.get(i).getIdentificadorProceso(), listaProcesosListo)).toString() + "----> a  'LISTO'");
 					listaProcesosNuevo.remove(i);
 					i=-1;
+					actualizarInformacion();
 				}else {
 					if (hayPrioridad(3, listaProcesosNuevo)) {
 						i = buscarPrioridad(3, listaProcesosNuevo);
@@ -67,12 +68,15 @@ public class Escritura_y_Lectura {
 						System.out.println("se ha pasado el proceso: " +  listaProcesosListo.get(buscarProceso(listaProcesosNuevo.get(i).getIdentificadorProceso(), listaProcesosListo)).toString() + "----> a  'LISTO'");
 						listaProcesosNuevo.remove(i);
 						i=-1;
+						actualizarInformacion();
 					}else {
 						procesoNuevo();
 					}
 				}
 			}
 		}
+		
+		
 	}
 	
 	public void estadoListo_Ejecucion() {//funcion que pasará procesos desde "LISTO" a "EJECUCION"
@@ -85,6 +89,7 @@ public class Escritura_y_Lectura {
 				System.out.println("se ha pasado el proceso: " +  listaProcesosEjecutando.get(buscarProceso(listaProcesosListo.get(i).getIdentificadorProceso(), listaProcesosEjecutando)).toString() + "----> a  'EJECUTANDO'");
 				listaProcesosListo.remove(i);//removemos el proceso de LISTO
 				i = -1;//reiniciamos el contador
+				actualizarInformacion();
 			}else {
 				if (hayPrioridad(2, listaProcesosListo)) {//Corrobora si existen procesos con esa maxima prioridad en la lista para pasarlos a "EJECUCION"
 					i = buscarPrioridad(2, listaProcesosListo);//almacena el indice del elemento de la lista con la prioridad buscada
@@ -93,6 +98,7 @@ public class Escritura_y_Lectura {
 					System.out.println("se ha pasado el proceso: " +  listaProcesosEjecutando.get(buscarProceso(listaProcesosListo.get(i).getIdentificadorProceso(), listaProcesosEjecutando)).toString() + "----> a  'EJECUTANDO'");
 					listaProcesosListo.remove(i);//removemos el proceso de LISTO
 					i = -1;//reiniciamos el contador
+					actualizarInformacion();
 				}else {
 					if (hayPrioridad(3, listaProcesosListo)) {//Corrobora si existen procesos con esa maxima prioridad en la lista para pasarlos a "EJECUCION"
 						i = buscarPrioridad(3, listaProcesosListo);//almacena el indice del elemento de la lista con la prioridad buscada
@@ -103,6 +109,7 @@ public class Escritura_y_Lectura {
 						
 						listaProcesosListo.remove(i);//removemos el proceso de LISTO
 						i = -1;//reiniciamos el contador
+						actualizarInformacion();
 					}else {
 						estadoNuevo_Listo();
 					}
@@ -195,5 +202,18 @@ public class Escritura_y_Lectura {
 
 	public void cicloEjecucion () {
 		
+	}
+	
+	public void actualizarInformacion() {
+		if(listaProcesosNuevo.size()>0)
+		archivo.escrbirArchivoPlanoEstado(listaProcesosNuevo);
+		if(listaProcesosListo.size()>0)
+		archivo.escrbirArchivoPlanoEstado(listaProcesosListo);
+		if(listaProcesosEjecutando.size()>0)
+		archivo.escrbirArchivoPlanoEstado(listaProcesosEjecutando);
+		if(listaProcesosBloqueado.size()>0)
+		archivo.escrbirArchivoPlanoEstado(listaProcesosBloqueado);
+		if(listaProcesosTerminado.size()>0)
+		archivo.escrbirArchivoPlanoEstado(listaProcesosTerminado);
 	}
 }
