@@ -11,7 +11,7 @@ public class AtributosProceso {
 	private String instrucionBloqueo;
 	private int eventoBloqueo;
 	private int instruccionActual = 0;
-	private int ciclosBloqueoRecorrido = 0;//lleva la cuenta de cuantos ciclos tiene de estar el "bloqueo"
+	private int ciclosEnBloqueo = 0;//lleva la cuenta de cuantos ciclos tiene de estar el "bloqueo"
 	
 	//Declaracion instancia de variable para generar numeros aleatorios
 	private Random aleatorio = new Random();
@@ -63,6 +63,26 @@ public class AtributosProceso {
 		
 	}
 
+	public int getInstruccionesLeidas() {
+		return instruccionesLeidas;
+	}
+
+	public void setInstruccionesLeidas(int instruccionesLeidas) {
+		this.instruccionesLeidas = instruccionesLeidas;
+	}
+
+	public int getCiclosEnBloqueo() {
+		return ciclosEnBloqueo;
+	}
+
+	public void setCiclosEnBloqueo(int CiclosEnBloqueo) {
+		this.ciclosEnBloqueo = CiclosEnBloqueo;
+	}
+
+	public void setInstruccionActual(int instruccionActual) {
+		this.instruccionActual = instruccionActual;
+	}
+
 	public String getInstrucionBloqueo() {
 		return instrucionBloqueo;
 	}
@@ -85,15 +105,15 @@ public class AtributosProceso {
 	}
 
 	public void nuevoProceso() {
-		int CantidadInstrucciones = aleatorio.nextInt(10000);// atributo para que no entre en confilicto el "setCantidadInstrucciones" ya que le estamos enviando un String(que no se puede castear a INTEGER).
+		int CantidadInstrucciones = aleatorio.nextInt(5)+2;// atributo para que no entre en confilicto el "setCantidadInstrucciones" ya que le estamos enviando un String(que no se puede castear a INTEGER).
 		setEstadoProceso(0);
 		setPrioridadProceso(aleatorio.nextInt(3) + 1);
 
 		setCantidadInstrucciones(CantidadInstrucciones);
-		setInstrucionBloqueo(aleatorio.nextInt(CantidadInstrucciones));//getCantidadInstrucciones para que la instruccion de bloqueo no sea mayor a la cantidad de instrucciones totales, lo cual no seria correcto
+		setInstrucionBloqueo(aleatorio.nextInt(Integer.parseInt(getCantidadInstrucciones()))+1);//getCantidadInstrucciones para que la instruccion de bloqueo no sea mayor a la cantidad de instrucciones totales, lo cual no seria correcto
 
-		setCantidadInstrucciones(aleatorio.nextInt(1000));
-		setInstrucionBloqueo(aleatorio.nextInt(Integer.valueOf(getCantidadInstrucciones())));//getCantidadInstrucciones para que la instruccion de bloqueo no sea mayor a la cantidad de instrucciones totales, lo cual no seria correcto
+		//setCantidadInstrucciones(aleatorio.nextInt(1000));
+		//setInstrucionBloqueo(aleatorio.nextInt(Integer.valueOf(getCantidadInstrucciones())));//getCantidadInstrucciones para que la instruccion de bloqueo no sea mayor a la cantidad de instrucciones totales, lo cual no seria correcto
 		switch(aleatorio.nextInt(2)){
 			case 0:
 				setEventoBloqueo(3);
