@@ -5,8 +5,12 @@ public class GestorProcesos {
 		int n=0;
 		
 		Escritura_y_Lectura gestor = new Escritura_y_Lectura();
-		
-		while(n<=1) {
+
+		while(n<=10) {
+
+			n++;
+
+			System.out.println("CicloDelProcesador #"+n);
 			
 			gestor.procesoNuevo();
 			
@@ -14,9 +18,8 @@ public class GestorProcesos {
 			
 			gestor.estadoListo_Ejecucion();
 			
-			System.out.println("Ciclo #"+n);
+			gestor.cicloEjecucion();
 			
-			n++;
 		}
 	}
 }

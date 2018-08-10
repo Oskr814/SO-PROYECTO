@@ -10,7 +10,7 @@ public class AtributosProceso {
 	private String cantidadInstrucciones;
 	private String instrucionBloqueo;
 	private int eventoBloqueo;
-	private int instruccionActual = 0;
+	private int ciclosEjecucion = 0;
 	private int ciclosEnBloqueo = 0;//lleva la cuenta de cuantos ciclos tiene de estar el "bloqueo"
 	
 	//Declaracion instancia de variable para generar numeros aleatorios
@@ -25,12 +25,12 @@ public class AtributosProceso {
 		return identificadorProceso;
 	}
 	
-	public void SetInstruccionActual() {
-		instruccionActual++;
+	public void SetCiclosEjecucion() {
+		ciclosEjecucion++;
 	}
 	
-	public int getInstruccionActual() {
-		return instruccionActual;
+	public int getCiclosEjecucion() {
+		return ciclosEjecucion;
 	}
 	
 	public int getEstadoProceso() {
@@ -67,8 +67,8 @@ public class AtributosProceso {
 		return instruccionesLeidas;
 	}
 
-	public void setInstruccionesLeidas(int instruccionesLeidas) {
-		this.instruccionesLeidas = instruccionesLeidas;
+	public void setInstruccionesLeidas() {
+		this.instruccionesLeidas++;
 	}
 
 	public int getCiclosEnBloqueo() {
@@ -77,10 +77,6 @@ public class AtributosProceso {
 
 	public void setCiclosEnBloqueo(int CiclosEnBloqueo) {
 		this.ciclosEnBloqueo = CiclosEnBloqueo;
-	}
-
-	public void setInstruccionActual(int instruccionActual) {
-		this.instruccionActual = instruccionActual;
 	}
 
 	public String getInstrucionBloqueo() {
