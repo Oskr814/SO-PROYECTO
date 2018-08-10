@@ -10,7 +10,7 @@ public class GestorProcesos {
 
 			n++;
 
-			System.out.println("Ciclo #"+n);
+			System.out.println("CicloDelProcesador #"+n);
 			
 			gestor.procesoNuevo();
 			
