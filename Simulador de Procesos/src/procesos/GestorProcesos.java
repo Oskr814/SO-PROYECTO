@@ -18,6 +18,8 @@ public class GestorProcesos {
 			
 			gestor.estadoListo_Ejecucion();
 			
+			gestor.cicloEjecucion();
+			
 		}
 	}
 }
