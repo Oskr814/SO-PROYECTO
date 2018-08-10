@@ -46,7 +46,7 @@ public class Escritura_y_Lectura {
 			if (hayPrioridad(1, listaProcesosNuevo)) {//se buscarán los procesos de mayor prioridad y si existen entrará al 'for'
 				i = buscarPrioridad(1, listaProcesosNuevo);//indice donde está el proceso de 'x' prioridad que se moverá que se moverá
 				listaProcesosListo.add(listaProcesosNuevo.get(i));//Añade a la lista"LISTO" el proceso desde "NUEVO"
-				listaProcesosListo.get(buscarProceso(listaProcesosNuevo.get(i).getIdentificadorProceso(), listaProcesosListo)).setEstadoProceso(1);;
+				listaProcesosListo.get(buscarProceso(listaProcesosNuevo.get(i).getIdentificadorProceso(), listaProcesosListo)).setEstadoProceso(1);
 				System.out.println("se ha pasado el proceso: " +  listaProcesosListo.get(buscarProceso(listaProcesosNuevo.get(i).getIdentificadorProceso(), listaProcesosListo)).toString() + "----> 'NUEVO' a 'LISTO'");
 				listaProcesosNuevo.remove(i);//removemos el proceso que se trasladó
 				i=-1;//reiniciamos el indice para no
@@ -134,12 +134,14 @@ public class Escritura_y_Lectura {
 		if(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).getEventoBloqueo() == 3) {
 			if(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).getCiclosEnBloqueo() == 3) {
 				listaProcesosListo.add(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)));
+				listaProcesosListo.get(buscarIndice(ID, listaProcesosListo)).setEstadoProceso(1);
 				System.out.println("se ha pasado el proceso: " +  listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).toString() + "----> 'BLOQUEADO' A 'LISTO' 13-CICLOS");
 				listaProcesosBloqueado.remove(buscarIndice(ID, listaProcesosBloqueado));
 			}
 		}else {
 			if(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).getCiclosEnBloqueo() == 5) {
 				listaProcesosListo.add(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)));
+				listaProcesosListo.get(buscarIndice(ID, listaProcesosListo)).setEstadoProceso(1);
 				System.out.println("se ha pasado el proceso: " +  listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).toString() + "----> 'BLOQUEADO' A 'LISTO' 27-CICLOS");
 				listaProcesosBloqueado.remove(buscarIndice(ID, listaProcesosBloqueado));
 			}
@@ -149,6 +151,7 @@ public class Escritura_y_Lectura {
 	private boolean estadoEjecucion_Listo(AtributosProceso proceso) { //Cambio de estado de Ejecucion a listo, asumiento que los procesos entran a lista ejecucion por prioridad
 		if (proceso.getCiclosEjecucion() == ciclosDelProcesador) {
 			listaProcesosListo.add(listaProcesosEjecutando.get(buscarProceso(proceso.getIdentificadorProceso(), listaProcesosEjecutando)));
+			listaProcesosListo.get(buscarProceso(proceso.getIdentificadorProceso(), listaProcesosListo)).setEstadoProceso(1);
 			listaProcesosEjecutando.remove(proceso);
 			System.out.println("se ha pasado el proceso: " +  listaProcesosBloqueado.get(buscarIndice(proceso.getIdentificadorProceso(), listaProcesosBloqueado)).toString() + "----> 'EJECUCION' A 'LISTO'");
 			return true;
@@ -159,6 +162,7 @@ public class Escritura_y_Lectura {
 	private boolean EstadoEjecucion_Terminado(AtributosProceso proceso) {//funcion  que añade procesos a la lista de terminados y retorna un verdadero si el proceso se termina y falso si no.
 		if(proceso.getInstruccionesLeidas() == Integer.parseInt(proceso.getCantidadInstrucciones())) {//compara las instrucciones leídas con las instrucciones totales para determinar si el proceso ha finalizado
 			listaProcesosTerminado.add(proceso);
+			listaProcesosTerminado.get(buscarProceso(proceso.getIdentificadorProceso(), listaProcesosTerminado)).setEstadoProceso(4);
 			System.out.println("el proceso " + proceso.toString() + " ha FINALIZADO");
 			listaProcesosEjecutando.remove(proceso);
 			return true;
@@ -213,10 +217,9 @@ public class Escritura_y_Lectura {
 			
 			if((i = buscarPrioridad(1, listaProcesosEjecutando)) != -1){//lo importante es buscar la prioridad mayor y ejecutar ese proceso
 				if(EstadoEjecucion_Terminado(listaProcesosEjecutando.get(i)) != true) {//determinará si el proceso ha finalizado
-					// determinará si el proceso se bloqueará
-					if(estadoEjecucion_Bloqueado(listaProcesosEjecutando.get(i).getInstrucionBloqueo(), listaProcesosEjecutando.get(i).getIdentificadorProceso()) != true ) {
-						if(estadoEjecucion_Listo(listaProcesosEjecutando.get(i)) != true ) {
-							listaProcesosEjecutando.get(i).SetCiclosEjecucion();
+					if(estadoEjecucion_Bloqueado(listaProcesosEjecutando.get(i).getInstrucionBloqueo(), listaProcesosEjecutando.get(i).getIdentificadorProceso()) != true ) {//determinará si la ultima instruccion es una instruccion de bloqueo
+						if(estadoEjecucion_Listo(listaProcesosEjecutando.get(i)) != true ) {//determinará si se cumplieron los ciclos dados por el usuario en este proceso
+							listaProcesosEjecutando.get(i).SetCiclosEjecucion();//aumentará la variable cada que se lean las instrucciones
 							listaProcesosEjecutando.get(i).setInstruccionesLeidas();//se leerá la instruccion siguiente
 							System.out.println("se leyó la instruccion: " + listaProcesosEjecutando.get(i).getInstruccionesLeidas() + " del proceso: " + listaProcesosEjecutando.get(i).toString());
 						}
