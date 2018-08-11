@@ -91,11 +91,11 @@ public class ArchivoTexto {
 			//Path path = Paths.get("Procesos/"+estadoProceso(proceso.getEstadoProceso())+"/"+proceso.getIdentificadorProceso()+".txt");
 			try
 			{
-				Path path = Paths.get("Procesos/"+estadoProceso(proceso.getEstadoProceso())+"/"+proceso.getIdentificadorProceso()+".txt");
+				Path path = Paths.get("Procesos/"+estadoProceso(proceso.getEstadoProceso())+proceso.getIdentificadorProceso()+".txt");
 				
 				if(Files.exists(path)){
 					Files.delete(path);
-					System.out.println(proceso.toString()+" eliminado");
+					System.out.println("Eliminado");
 				}else
 					System.out.println("No eliminado");
 					

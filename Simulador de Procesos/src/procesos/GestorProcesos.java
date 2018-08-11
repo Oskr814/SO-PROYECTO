@@ -31,8 +31,6 @@ public class GestorProcesos {
 			
 			gestor.cicloEjecucion();
 			
-			gestor.actualizarInformacion();
-			
 		}
 	}
 }
