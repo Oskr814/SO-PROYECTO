@@ -28,15 +28,8 @@ public class GestorProcesos {
 
 			System.out.println("CicloDelProcesador #"+n);
 			
-			gestor.procesoNuevo();
-			
-			gestor.estadoNuevo_Listo();
-			
-			gestor.estadoListo_Ejecucion();
 			
 			gestor.cicloEjecucion();
-			
-			gestor.actualizarInformacion();
 			
 		}
 	}

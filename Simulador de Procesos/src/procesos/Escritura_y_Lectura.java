@@ -1,6 +1,18 @@
 package procesos;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Random;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
 
 public class Escritura_y_Lectura {
 	
@@ -13,11 +25,31 @@ public class Escritura_y_Lectura {
 	public ArchivoTexto archivo = new ArchivoTexto();
 	private Random random = new Random();
 	
+	
+	FileOutputStream estadoProcesoNuevo = null;
+	FileOutputStream estadoProcesoListo= null;
+	FileOutputStream estadoProcesoEjecutado = null;
+	FileOutputStream estadoProcesoBloqueado = null;
+	FileOutputStream estadoProcesoTerminado = null;
+	
+	
 	private int maximoProcesos = 5;
 	public int ciclosDelProcesador = 10; //Esta variable la defino de manera constante para fines de codificacion, deberia ser especificada por el usuario.
 	
 	public Escritura_y_Lectura() {
 		// TODO Auto-generated constructor stub
+		try {
+			estadoProcesoNuevo = new FileOutputStream("procesos/Nuevo/estadoProcesoNuevo.txt");
+			estadoProcesoListo = new FileOutputStream("procesos/Listo/estadoProcesoListo.txt");
+			estadoProcesoEjecutado = new FileOutputStream("procesos/Ejecucion/estadoProcesoEjecucion.txt");
+			estadoProcesoBloqueado = new FileOutputStream("procesos/Bloqueado/estadoProcesoBloqueado.txt");
+			estadoProcesoTerminado = new FileOutputStream("procesos/Terminado/estadoProcesoTerminado.txt");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Se produjo un error");
+			e.printStackTrace();
+		}
+		
 		for(int i=0 ; i<10000 ; i++) {//estructura correcta que debe tener el ID asi que se harán como String
 			if(i<=9) {
 				listaID_Utilizables.add(i, "000"+Integer.toString(i));
@@ -34,9 +66,10 @@ public class Escritura_y_Lectura {
 		while(listaProcesosNuevo.size() < maximoProcesos) {
 			int IndiceUtilizado = random.nextInt(listaID_Utilizables.size());//sacamos el numero al azar para la creacion de procesos, que será el indice de la lista disponible
 			listaProcesosNuevo.add(new AtributosProceso(listaID_Utilizables.get(IndiceUtilizado)));//sacamos el String, con las regulaciones necesarias para mandarlo como parametro al constructor de "AtributosProceso"
+			actualizarTXT("procesos/Nuevo/estadoProcesoNuevo.txt", listaProcesosNuevo);
 			System.out.println("se ha creado un proceso: " + listaProcesosNuevo.get(buscarProceso(listaID_Utilizables.get(IndiceUtilizado), listaProcesosNuevo)).toString() + "---> NUEVO");
 			listaID_Utilizables.remove(IndiceUtilizado);//Eliminamos el item para evitar que se repita nuestro ID que debe ser único
-			
+			actualizarTXT("procesos/Nuevo/estadoProcesoNuevo.txt", listaProcesosNuevo);
 		}
 	}
 	
@@ -50,7 +83,9 @@ public class Escritura_y_Lectura {
 				System.out.println("se ha pasado el proceso: " +  listaProcesosListo.get(buscarProceso(listaProcesosNuevo.get(i).getIdentificadorProceso(), listaProcesosListo)).toString() + "----> 'NUEVO' a 'LISTO'");
 				listaProcesosNuevo.remove(i);//removemos el proceso que se trasladó
 				i=-1;//reiniciamos el indice para no
-				
+				//actualizarInformacion();
+				actualizarTXT("procesos/Nuevo/estadoProcesoNuevo.txt", listaProcesosNuevo);
+				actualizarTXT("procesos/Listo/estadoProcesoListo.txt", listaProcesosListo);
 			}else {
 				if (hayPrioridad(2, listaProcesosNuevo)) {//se buscarán los procesos de media prioridad y si existen entrará al 'for' 
 					i = buscarPrioridad(2, listaProcesosNuevo);
@@ -59,7 +94,9 @@ public class Escritura_y_Lectura {
 					System.out.println("se ha pasado el proceso: " +  listaProcesosListo.get(buscarProceso(listaProcesosNuevo.get(i).getIdentificadorProceso(), listaProcesosListo)).toString() + "----> 'NUEVO' a 'LISTO'");
 					listaProcesosNuevo.remove(i);
 					i=-1;
-					
+					//actualizarInformacion();
+					actualizarTXT("procesos/Nuevo/estadoProcesoNuevo.txt", listaProcesosNuevo);
+					actualizarTXT("procesos/Listo/estadoProcesoListo.txt", listaProcesosListo);
 				}else {
 					if (hayPrioridad(3, listaProcesosNuevo)) {
 						i = buscarPrioridad(3, listaProcesosNuevo);
@@ -68,7 +105,9 @@ public class Escritura_y_Lectura {
 						System.out.println("se ha pasado el proceso: " +  listaProcesosListo.get(buscarProceso(listaProcesosNuevo.get(i).getIdentificadorProceso(), listaProcesosListo)).toString() + "----> 'NUEVO' a 'LISTO'");
 						listaProcesosNuevo.remove(i);
 						i=-1;
-						
+						//actualizarInformacion();
+						actualizarTXT("procesos/Nuevo/estadoProcesoNuevo.txt", listaProcesosNuevo);
+						actualizarTXT("procesos/Listo/estadoProcesoListo.txt", listaProcesosListo);
 					}else {
 						procesoNuevo();
 					}
@@ -87,10 +126,11 @@ public class Escritura_y_Lectura {
 				listaProcesosEjecutando.add(listaProcesosListo.get(i));//añadimos el proceso a la lista de "EJECUCION"
 				listaProcesosEjecutando.get(buscarProceso(listaProcesosListo.get(i).getIdentificadorProceso(), listaProcesosEjecutando)).setEstadoProceso(2);;
 				System.out.println("se ha pasado el proceso: " +  listaProcesosEjecutando.get(buscarProceso(listaProcesosListo.get(i).getIdentificadorProceso(), listaProcesosEjecutando)).toString() + "----> 'LISTO' a 'EJECUCION'");
-				archivo.ElimiarArchivoPlano(listaProcesosListo.get(i));
 				listaProcesosListo.remove(i);//removemos el proceso de LISTO
 				i = -1;//reiniciamos el contador
-				
+				//actualizarInformacion();
+				actualizarTXT("procesos/Ejecucion/estadoProcesoEjecucion.txt", listaProcesosEjecutando);
+				actualizarTXT("procesos/Listo/estadoProcesoListo.txt", listaProcesosListo);
 			}else {
 				if (hayPrioridad(2, listaProcesosListo)) {//Corrobora si existen procesos con esa maxima prioridad en la lista para pasarlos a "EJECUCION"
 					i = buscarPrioridad(2, listaProcesosListo);//almacena el indice del elemento de la lista con la prioridad buscada
@@ -99,18 +139,20 @@ public class Escritura_y_Lectura {
 					System.out.println("se ha pasado el proceso: " +  listaProcesosEjecutando.get(buscarProceso(listaProcesosListo.get(i).getIdentificadorProceso(), listaProcesosEjecutando)).toString() + "----> 'LISTO' a 'EJECUCION'");
 					listaProcesosListo.remove(i);//removemos el proceso de LISTO
 					i = -1;//reiniciamos el contador
-					
+					//actualizarInformacion();
+					actualizarTXT("procesos/Ejecucion/estadoProcesoEjecucion.txt", listaProcesosEjecutando);
+					actualizarTXT("procesos/Listo/estadoProcesoListo.txt", listaProcesosListo);
 				}else {
 					if (hayPrioridad(3, listaProcesosListo)) {//Corrobora si existen procesos con esa maxima prioridad en la lista para pasarlos a "EJECUCION"
 						i = buscarPrioridad(3, listaProcesosListo);//almacena el indice del elemento de la lista con la prioridad buscada
 						listaProcesosEjecutando.add(listaProcesosListo.get(i));//añadimos el proceso a la lista de "EJECUCION"
-
 						listaProcesosEjecutando.get(buscarProceso(listaProcesosListo.get(i).getIdentificadorProceso(), listaProcesosEjecutando)).setEstadoProceso(2);;
 						System.out.println("se ha pasado el proceso: " +  listaProcesosEjecutando.get(buscarProceso(listaProcesosListo.get(i).getIdentificadorProceso(), listaProcesosEjecutando)).toString() + "----> 'LISTO' a 'EJECUCION'");
-						
 						listaProcesosListo.remove(i);//removemos el proceso de LISTO
 						i = -1;//reiniciamos el contador
-						
+						//actualizarInformacion();
+						actualizarTXT("procesos/Ejecucion/estadoProcesoEjecucion.txt", listaProcesosEjecutando);
+						actualizarTXT("procesos/Listo/estadoProcesoListo.txt", listaProcesosListo);
 					}else {
 						estadoNuevo_Listo();
 					}
@@ -125,6 +167,8 @@ public class Escritura_y_Lectura {
 			listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).setEstadoProceso(3);
 			System.out.println("se ha pasado el proceso: " +  listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).toString() + "----> 'EJECUCION' a 'BLOQUEADO'");
 			listaProcesosEjecutando.remove(buscarIndice(ID, listaProcesosEjecutando));
+			actualizarTXT("procesos/Ejecucion/estadoProcesoEjecucion.txt", listaProcesosEjecutando);
+			actualizarTXT("procesos/Bloqueado/estadoProcesoBloqueado.txt", listaProcesosBloqueado);
 			return true;
 		}else {
 			return false;
@@ -133,28 +177,35 @@ public class Escritura_y_Lectura {
 	
 	public void estadoBloqueado_Listo(String ID) {//Función que determina si un proceso cumplió con los ciclos respectivos para estar en la lista de "BLOQUEO" y los pasa a "LISTO"
 		if(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).getEventoBloqueo() == 3) {
-			if(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).getCiclosEnBloqueo() == 3) {
+			if(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).getCiclosEnBloqueo() == 13) {
 				listaProcesosListo.add(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)));
 				listaProcesosListo.get(buscarIndice(ID, listaProcesosListo)).setEstadoProceso(1);
 				System.out.println("se ha pasado el proceso: " +  listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).toString() + "----> 'BLOQUEADO' A 'LISTO' 13-CICLOS");
 				listaProcesosBloqueado.remove(buscarIndice(ID, listaProcesosBloqueado));
+				actualizarTXT("procesos/Listo/estadoProcesoListo.txt", listaProcesosListo);
+				actualizarTXT("procesos/Bloqueado/estadoProcesoBloqueado.txt", listaProcesosBloqueado);
 			}
 		}else {
-			if(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).getCiclosEnBloqueo() == 5) {
+			if(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).getCiclosEnBloqueo() == 27) {
 				listaProcesosListo.add(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)));
 				listaProcesosListo.get(buscarIndice(ID, listaProcesosListo)).setEstadoProceso(1);
 				System.out.println("se ha pasado el proceso: " +  listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).toString() + "----> 'BLOQUEADO' A 'LISTO' 27-CICLOS");
 				listaProcesosBloqueado.remove(buscarIndice(ID, listaProcesosBloqueado));
+				actualizarTXT("procesos/Listo/estadoProcesoListo.txt", listaProcesosListo);
+				actualizarTXT("procesos/Bloqueado/estadoProcesoBloqueado.txt", listaProcesosBloqueado);
 			}
 		}
 	}
 	
 	private boolean estadoEjecucion_Listo(AtributosProceso proceso) { //Cambio de estado de Ejecucion a listo, asumiento que los procesos entran a lista ejecucion por prioridad
 		if (proceso.getCiclosEjecucion() == ciclosDelProcesador) {
+			proceso.SetCiclosEjecucion(0);
 			listaProcesosListo.add(listaProcesosEjecutando.get(buscarProceso(proceso.getIdentificadorProceso(), listaProcesosEjecutando)));
 			listaProcesosListo.get(buscarProceso(proceso.getIdentificadorProceso(), listaProcesosListo)).setEstadoProceso(1);
 			listaProcesosEjecutando.remove(proceso);
-			System.out.println("se ha pasado el proceso: " +  listaProcesosBloqueado.get(buscarIndice(proceso.getIdentificadorProceso(), listaProcesosBloqueado)).toString() + "----> 'EJECUCION' A 'LISTO'");
+			System.out.println("se ha pasado el proceso: " +  listaProcesosListo.get(buscarIndice(proceso.getIdentificadorProceso(), listaProcesosListo)).toString() + "----> 'EJECUCION' A 'LISTO'");
+			actualizarTXT("procesos/Listo/estadoProcesoListo.txt", listaProcesosListo);
+			actualizarTXT("procesos/Ejecucion/estadoProcesoEjecucion.txt", listaProcesosEjecutando);
 			return true;
 		}
 		return false;
@@ -166,6 +217,8 @@ public class Escritura_y_Lectura {
 			listaProcesosTerminado.get(buscarProceso(proceso.getIdentificadorProceso(), listaProcesosTerminado)).setEstadoProceso(4);
 			System.out.println("el proceso " + proceso.toString() + " ha FINALIZADO");
 			listaProcesosEjecutando.remove(proceso);
+			actualizarTXT("procesos/Terminado/estadoProcesoTerminado.txt", listaProcesosTerminado);
+			actualizarTXT("procesos/Ejecucion/estadoProcesoEjecucion.txt", listaProcesosEjecutando);
 			return true;
 		}
 		return false;
@@ -213,6 +266,10 @@ public class Escritura_y_Lectura {
 		while (n < ciclosDelProcesador) {//cantidad de ciclos dados por el usuario, instrucciones que se leerán a la vez
 			
 			n++;
+			
+			procesoNuevo();
+			estadoNuevo_Listo();
+			estadoListo_Ejecucion();
 			
 			System.out.println("Instruccion #"+ n);
 			
@@ -265,8 +322,42 @@ public class Escritura_y_Lectura {
 		}
 	}
 	
+	private void actualizarTXT (String ubicacion, ArrayList<AtributosProceso> lista) {
+		
+		File archivo = new File(ubicacion);
+		archivo.delete();
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream(archivo);
+			BufferedWriter br = new BufferedWriter(new OutputStreamWriter(fos));
+			
+			for(int i=0 ; i<lista.size() ; i++) {
+				br.write(lista.get(i).toString());
+				br.newLine();
+				br.flush();
+			}
+			
+			try {
+				fos.close();
+				br.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}
+		
+		
+		
+		
+	}
 	
 	
+	/*
 	public void actualizarInformacion() {
 		if(listaProcesosNuevo.size()>0)
 		archivo.escrbirArchivoPlanoEstado(listaProcesosNuevo);
@@ -279,7 +370,7 @@ public class Escritura_y_Lectura {
 		if(listaProcesosTerminado.size()>0)
 		archivo.escrbirArchivoPlanoEstado(listaProcesosTerminado);
 	}
-	
+	*/
 //--------------------------------------------------------	
 
 }
