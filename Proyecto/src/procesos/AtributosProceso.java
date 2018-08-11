@@ -29,10 +29,6 @@ public class AtributosProceso {
 		ciclosEjecucion++;
 	}
 	
-	public void SetCiclosEjecucion(int ciclosEjecucion) {
-		this.ciclosEjecucion= ciclosEjecucion;
-	}
-	
 	public int getCiclosEjecucion() {
 		return ciclosEjecucion;
 	}
@@ -105,12 +101,12 @@ public class AtributosProceso {
 	}
 
 	public void nuevoProceso() {
-		int CantidadInstrucciones = aleatorio.nextInt(19)+1;// atributo para que no entre en confilicto el "setCantidadInstrucciones" ya que le estamos enviando un String(que no se puede castear a INTEGER).
+		int CantidadInstrucciones = aleatorio.nextInt(5)+2;// atributo para que no entre en confilicto el "setCantidadInstrucciones" ya que le estamos enviando un String(que no se puede castear a INTEGER).
 		setEstadoProceso(0);
 		setPrioridadProceso(aleatorio.nextInt(3) + 1);
 
 		setCantidadInstrucciones(CantidadInstrucciones);
-		setInstrucionBloqueo(aleatorio.nextInt(Integer.parseInt(getCantidadInstrucciones())));//getCantidadInstrucciones para que la instruccion de bloqueo no sea mayor a la cantidad de instrucciones totales, lo cual no seria correcto
+		setInstrucionBloqueo(aleatorio.nextInt(Integer.parseInt(getCantidadInstrucciones()))+1);//getCantidadInstrucciones para que la instruccion de bloqueo no sea mayor a la cantidad de instrucciones totales, lo cual no seria correcto
 
 		//setCantidadInstrucciones(aleatorio.nextInt(1000));
 		//setInstrucionBloqueo(aleatorio.nextInt(Integer.valueOf(getCantidadInstrucciones())));//getCantidadInstrucciones para que la instruccion de bloqueo no sea mayor a la cantidad de instrucciones totales, lo cual no seria correcto
