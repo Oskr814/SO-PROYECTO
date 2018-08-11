@@ -5,7 +5,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
@@ -39,13 +38,13 @@ public class ArchivoTexto {
 				break;
 			case 4: ////Estado ejecucion terminado
 				path = Paths.get("../Procesos/Terminado/Procesos[Terminados].txt");
-				estado = "Terminados";
+				estado = "Terminado";
 				break;
 			default:
 				path = Paths.get("");
 				break;
 			}
-			Thread.sleep(100);
+			//Thread.sleep(100);
 			ElimiarArchivoPlano(estado);
 			
 		if(Files.exists(path)){
@@ -64,11 +63,7 @@ public class ArchivoTexto {
 		
 		}catch(IOException e){
 			System.out.println(e);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		} 
 	}
 	
 	protected void escribirEnArchivoPlanoProceso(ArrayList<AtributosProceso> lista, String estado) { //Metodo empleado para escribir en el archivo plano

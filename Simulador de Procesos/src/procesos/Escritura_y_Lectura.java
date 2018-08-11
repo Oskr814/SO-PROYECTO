@@ -169,23 +169,17 @@ public class Escritura_y_Lectura {
 	private boolean estadoEjecucion_Listo(AtributosProceso proceso) { //Cambio de estado de Ejecucion a listo, asumiento que los procesos entran a lista ejecucion por prioridad
 		if (proceso.getCiclosEjecucion() == ciclosDelProcesador) {
 			proceso.SetCiclosEjecucion(0);
-			System.out.println(proceso.getInstruccionesLeidas()+"//"+proceso.getCantidadInstrucciones());
-			if(proceso.getInstruccionesLeidas() == Integer.parseInt(proceso.getCantidadInstrucciones())) {
-				EstadoEjecucion_Terminado(proceso);
-			}else {
 				listaProcesosListo.add(listaProcesosEjecutando.get(buscarProceso(proceso.getIdentificadorProceso(), listaProcesosEjecutando)));
 				listaProcesosListo.get(buscarProceso(proceso.getIdentificadorProceso(), listaProcesosListo)).setEstadoProceso(1);
 				listaProcesosEjecutando.remove(proceso);
 				System.out.println("se ha pasado el proceso: " +  listaProcesosListo.get(buscarIndice(proceso.getIdentificadorProceso(), listaProcesosListo)).toString() + "----> 'EJECUCION' A 'LISTO'");
 				return true;
 			}
-				
-			
-		}
 		return false;
 	}
 	
 	private boolean EstadoEjecucion_Terminado(AtributosProceso proceso) {//funcion  que añade procesos a la lista de terminados y retorna un verdadero si el proceso se termina y falso si no.
+		System.out.println(proceso.getInstruccionesLeidas()+"//"+proceso.getCantidadInstrucciones());
 		if(proceso.getInstruccionesLeidas() == Integer.parseInt(proceso.getCantidadInstrucciones())) {//compara las instrucciones leídas con las instrucciones totales para determinar si el proceso ha finalizado
 			listaProcesosTerminado.add(proceso);
 			listaProcesosTerminado.get(buscarProceso(proceso.getIdentificadorProceso(), listaProcesosTerminado)).setEstadoProceso(4);
