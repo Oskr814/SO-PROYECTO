@@ -1,11 +1,11 @@
 package procesos;
-import java.io.File;
+
 
 public class GestorProcesos {
-	public static void main(String args[]) {
+	public static void main(String args[]) throws InterruptedException {
 		int n=0;
 		//Las siguientes lineas de codigo nos crearán las respectivas carpetas donde se almacenarán los procesos
-		File procesos = new File("procesos");
+		/*File procesos = new File("procesos");
 		procesos.mkdir();
 		File nuevo = new File("procesos/Nuevo");
 		nuevo.mkdirs();
@@ -18,11 +18,11 @@ public class GestorProcesos {
 		File Terminado = new File("procesos/Terminado");
 		Terminado.mkdirs();
 		
-		System.out.println("se creó una carpeta de procesos");
+		System.out.println("se creó una carpeta de procesos");*/
 		
 		Escritura_y_Lectura gestor = new Escritura_y_Lectura();
 
-		while(n<=10) {
+		while(true) {
 
 			n++;
 
@@ -30,7 +30,13 @@ public class GestorProcesos {
 			
 			
 			gestor.cicloEjecucion();
-			
+			gestor.actualizarInformacion();
+			Thread.sleep(100);
+		
 		}
+		
+	
 	}
+	
+	
 }
