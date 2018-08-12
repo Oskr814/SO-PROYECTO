@@ -2,7 +2,7 @@ package procesos;
 
 
 public class GestorProcesos {
-	public static void main(String args[]) {
+	public static void main(String args[]) throws InterruptedException {
 		int n=0;
 		//Las siguientes lineas de codigo nos crearán las respectivas carpetas donde se almacenarán los procesos
 		/*File procesos = new File("procesos");
@@ -26,8 +26,8 @@ public class GestorProcesos {
 
 			n++;
 
-			System.out.println("CicloDelProcesador #"+n);
-			
+			//System.out.println("CicloDelProcesador #"+n);
+			gestor.getEjecucion().mostrarInformacionEstados( String.valueOf(n), "CicloDelProcesador");
 			
 			gestor.cicloEjecucion();
 			gestor.actualizarInformacion();
