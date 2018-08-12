@@ -21,7 +21,9 @@ public class GestorProcesos {
 		System.out.println("se creó una carpeta de procesos");*/
 		
 		Escritura_y_Lectura gestor = new Escritura_y_Lectura();
-
+		gestor.getEjecucion().mostrarInformacionEstados("Preparando Gestor de Procesos", "Mensaje");
+		Thread.sleep(5000);
+		gestor.getEjecucion().mostrarInformacionEstados("", "Mensaje");
 		while(true) {
 
 			n++;

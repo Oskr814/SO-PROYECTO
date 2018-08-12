@@ -27,6 +27,7 @@ public class Ejecucion extends JFrame {
 	private JLabel lblRespuestaProceso;
 	private JLabel lblRespuestaEstadoActual;
 	private JLabel lblObservacion;
+	private JLabel lblRespuestaProcesoResume;
 	@SuppressWarnings("unused")
 	private String mensaje;
 	
@@ -169,6 +170,10 @@ public class Ejecucion extends JFrame {
 		lblDetalleProceso.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDetalleProceso.setBounds(10, 4, 174, 14);
 		panelDetalle.add(lblDetalleProceso);
+		
+		lblRespuestaProcesoResume = new JLabel("");
+		lblRespuestaProcesoResume.setBounds(127, 93, 46, 14);
+		panelDetalle.add(lblRespuestaProcesoResume);
 		JPanel panelEstadoNuevo = new JPanel();
 		panelEstadoNuevo.setBackground(SystemColor.controlHighlight);
 		panelEstadoNuevo.setBounds(214, 70, 194, 231);
@@ -267,6 +272,8 @@ public class Ejecucion extends JFrame {
 			lblRespuestaProceso.setText(parametros);
 		}else if ( estadoInstruccionProceso == "Mensaje"){
 			lblObservacion.setText(parametros);
+		}else if ( estadoInstruccionProceso == "ProcesoResume"){
+			lblRespuestaProcesoResume.setText(parametros);
 		}
 	}
 	

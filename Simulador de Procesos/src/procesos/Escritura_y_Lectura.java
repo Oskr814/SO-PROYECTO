@@ -204,7 +204,8 @@ public class Escritura_y_Lectura {
 	}
 	
 	private boolean EstadoEjecucion_Terminado(AtributosProceso proceso) throws InterruptedException {//funcion  que añade procesos a la lista de terminados y retorna un verdadero si el proceso se termina y falso si no.
-		System.out.println(proceso.getInstruccionesLeidas()+"//"+proceso.getCantidadInstrucciones());
+		//System.out.println(proceso.getInstruccionesLeidas()+"//"+proceso.getCantidadInstrucciones());
+		ejecucion.mostrarInformacionEstados( proceso.getInstruccionesLeidas()+"//"+proceso.getCantidadInstrucciones(), "ProcesoResume" );
 		if(proceso.getInstruccionesLeidas() == Integer.parseInt(proceso.getCantidadInstrucciones())) {//compara las instrucciones leídas con las instrucciones totales para determinar si el proceso ha finalizado
 			listaProcesosTerminado.add(proceso);
 			listaProcesosTerminado.get(buscarProceso(proceso.getIdentificadorProceso(), listaProcesosTerminado)).setEstadoProceso(4);
