@@ -1,5 +1,6 @@
 package procesos;
 import java.io.FileOutputStream;
+import java.io.Serializable;
 /*import java.io.FileReader;
 import java.io.FileWriter;*/
 import java.util.ArrayList;
@@ -13,10 +14,9 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;*/
-
 import Implementacion.Ejecucion;
 
-public class Escritura_y_Lectura {
+public class Escritura_y_Lectura implements Serializable{
 	
 	private ArrayList<String> listaID_Utilizables = new ArrayList<String>(10000);
 	private ArrayList<AtributosProceso> listaProcesosListo  = new ArrayList<AtributosProceso>();
@@ -55,6 +55,46 @@ public class Escritura_y_Lectura {
 	public Ejecucion getEjecucion() {
 		return ejecucion;
 	}
+	public ArrayList<AtributosProceso> getListaProcesosListo() {
+		return listaProcesosListo;
+	}
+
+	public void setListaProcesosListo(ArrayList<AtributosProceso> listaProcesosListo) {
+		this.listaProcesosListo = listaProcesosListo;
+	}
+
+	public ArrayList<AtributosProceso> getListaProcesosEjecutando() {
+		return listaProcesosEjecutando;
+	}
+
+	public void setListaProcesosEjecutando(ArrayList<AtributosProceso> listaProcesosEjecutando) {
+		this.listaProcesosEjecutando = listaProcesosEjecutando;
+	}
+
+	public ArrayList<AtributosProceso> getListaProcesosBloqueado() {
+		return listaProcesosBloqueado;
+	}
+
+	public void setListaProcesosBloqueado(ArrayList<AtributosProceso> listaProcesosBloqueado) {
+		this.listaProcesosBloqueado = listaProcesosBloqueado;
+	}
+
+	public ArrayList<AtributosProceso> getListaProcesosNuevo() {
+		return listaProcesosNuevo;
+	}
+
+	public void setListaProcesosNuevo(ArrayList<AtributosProceso> listaProcesosNuevo) {
+		this.listaProcesosNuevo = listaProcesosNuevo;
+	}
+
+	public ArrayList<AtributosProceso> getListaProcesosTerminado() {
+		return listaProcesosTerminado;
+	}
+
+	public void setListaProcesosTerminado(ArrayList<AtributosProceso> listaProcesosTerminado) {
+		this.listaProcesosTerminado = listaProcesosTerminado;
+	}
+
 	public void setEjecucion(Ejecucion ejecucion) {
 		this.ejecucion = ejecucion;
 	}
