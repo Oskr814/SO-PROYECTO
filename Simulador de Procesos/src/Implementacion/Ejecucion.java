@@ -173,6 +173,7 @@ public class Ejecucion extends JFrame {
 		panelDetalle.add(lblDetalleProceso);
 		
 		JLabel lblIngreseCicloDel = new JLabel("Ingrese Ciclo del Procesador:");
+		lblIngreseCicloDel.setFont(new Font("Tahoma", Font.BOLD, 10));
 		lblIngreseCicloDel.setBounds(10, 29, 152, 14);
 		panelDetalle.add(lblIngreseCicloDel);
 		

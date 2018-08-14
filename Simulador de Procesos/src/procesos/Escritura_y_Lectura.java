@@ -36,7 +36,7 @@ public class Escritura_y_Lectura implements Serializable{
 	
 	
 	private int maximoProcesos = 5;
-	private int ciclosDelProcesador; //Esta variable la defino de manera constante para fines de codificacion, deberia ser especificada por el usuario.
+	private int ciclosDelProcesador = 10; //Esta variable la defino de manera constante para fines de codificacion, deberia ser especificada por el usuario.
 	
 	public int getCiclosDelProcesador() {
 		return ciclosDelProcesador;
