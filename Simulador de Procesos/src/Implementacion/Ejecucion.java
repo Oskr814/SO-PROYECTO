@@ -13,8 +13,6 @@ import javax.swing.UIManager;
 import java.awt.SystemColor;
 import javax.swing.border.LineBorder;
 
-import procesos.Escritura_y_Lectura;
-
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -36,7 +34,6 @@ public class Ejecucion extends JFrame {
 	private JLabel lblObservacion;
 	
 	private JTextField txtCicloProcesador;
-	Escritura_y_Lectura proceso = new Escritura_y_Lectura();
 	
 	public Ejecucion() {
 		inicializarVentana();
