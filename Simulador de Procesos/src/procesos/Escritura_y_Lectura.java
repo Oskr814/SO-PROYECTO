@@ -17,7 +17,7 @@ import java.io.Writer;*/
 import Implementacion.Ejecucion;
 
 public class Escritura_y_Lectura implements Serializable{
-	
+	private static final long serialVersionUID = 1L;
 	private ArrayList<String> listaID_Utilizables = new ArrayList<String>(10000);
 	private ArrayList<AtributosProceso> listaProcesosListo  = new ArrayList<AtributosProceso>();
 	private ArrayList<AtributosProceso> listaProcesosEjecutando = new ArrayList<AtributosProceso>();
@@ -36,8 +36,16 @@ public class Escritura_y_Lectura implements Serializable{
 	
 	
 	private int maximoProcesos = 5;
-	public int ciclosDelProcesador = 10; //Esta variable la defino de manera constante para fines de codificacion, deberia ser especificada por el usuario.
+	private int ciclosDelProcesador; //Esta variable la defino de manera constante para fines de codificacion, deberia ser especificada por el usuario.
 	
+	public int getCiclosDelProcesador() {
+		return ciclosDelProcesador;
+	}
+
+	public void setCiclosDelProcesador(int ciclosDelProcesador) {
+		this.ciclosDelProcesador = ciclosDelProcesador;
+	}
+
 	public Escritura_y_Lectura() {
 		
 		for(int i=0 ; i<10000 ; i++) {//estructura correcta que debe tener el ID asi que se harán como String
@@ -244,8 +252,6 @@ public class Escritura_y_Lectura implements Serializable{
 	}
 	
 	private boolean EstadoEjecucion_Terminado(AtributosProceso proceso) throws InterruptedException {//funcion  que añade procesos a la lista de terminados y retorna un verdadero si el proceso se termina y falso si no.
-		//System.out.println(proceso.getInstruccionesLeidas()+"//"+proceso.getCantidadInstrucciones());
-		ejecucion.mostrarInformacionEstados( proceso.getInstruccionesLeidas()+"//"+proceso.getCantidadInstrucciones(), "ProcesoResume" );
 		if(proceso.getInstruccionesLeidas() == Integer.parseInt(proceso.getCantidadInstrucciones())) {//compara las instrucciones leídas con las instrucciones totales para determinar si el proceso ha finalizado
 			listaProcesosTerminado.add(proceso);
 			listaProcesosTerminado.get(buscarProceso(proceso.getIdentificadorProceso(), listaProcesosTerminado)).setEstadoProceso(4);

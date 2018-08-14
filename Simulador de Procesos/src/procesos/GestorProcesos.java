@@ -1,7 +1,5 @@
 package procesos;
 
-import java.util.ArrayList;
-
 public class GestorProcesos {
 	public static void main(String args[]) throws InterruptedException {
 		int n=0;
@@ -20,7 +18,7 @@ public class GestorProcesos {
 		Terminado.mkdirs();
 		
 		System.out.println("se creó una carpeta de procesos");*/
-		GuardarEstadoEjecucionProcesos procesos = new GuardarEstadoEjecucionProcesos();
+		//GuardarEstadoEjecucionProcesos procesos = new GuardarEstadoEjecucionProcesos();
 		Escritura_y_Lectura gestor = new Escritura_y_Lectura();
 		gestor.getEjecucion().mostrarInformacionEstados("Preparando Gestor de Procesos", "Mensaje");
 		Thread.sleep(5000);
@@ -33,11 +31,11 @@ public class GestorProcesos {
 			gestor.getEjecucion().mostrarInformacionEstados( String.valueOf(n), "CicloDelProcesador");
 			
 			gestor.cicloEjecucion();
-			procesos.guardarEstadoEjecucion(gestor.getListaProcesosListo(), "Listo");
-			ArrayList<AtributosProceso> Listo = procesos.recuperarEstadoEjecucion("Listo");
+			/*procesos.guardarEstadoEjecucion(gestor.getListaProcesosListo(), "Listo");
+			//ArrayList<AtributosProceso> Listo = procesos.recuperarEstadoEjecucion("Listo");
 			for(int i=0; i<gestor.getListaProcesosListo().size() ; i++) {
 					System.out.println(Listo.get(i).toString());
-			}
+			}*/
 			gestor.actualizarInformacion();
 		
 		}

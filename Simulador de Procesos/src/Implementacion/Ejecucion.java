@@ -13,6 +13,13 @@ import javax.swing.UIManager;
 import java.awt.SystemColor;
 import javax.swing.border.LineBorder;
 
+import procesos.Escritura_y_Lectura;
+
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 public class Ejecucion extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -27,22 +34,19 @@ public class Ejecucion extends JFrame {
 	private JLabel lblRespuestaProceso;
 	private JLabel lblRespuestaEstadoActual;
 	private JLabel lblObservacion;
-	private JLabel lblRespuestaProcesoResume;
-	@SuppressWarnings("unused")
-	private String mensaje;
+	
+	private JTextField txtCicloProcesador;
+	Escritura_y_Lectura proceso = new Escritura_y_Lectura();
 	
 	public Ejecucion() {
 		inicializarVentana();
 		inicializarElementos();
 	}
-	public Ejecucion(String mensaje) {
-		this.mensaje = mensaje;
-	}
 
 	public void inicializarVentana(){
 		setTitle("Simulador de Gestor de Procesos");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 636, 610);
+		setBounds(100, 100, 636, 700);
 		contentPane = new JPanel();
 		contentPane.setLocation(0, -340);
 		contentPane.setBackground(SystemColor.inactiveCaption);
@@ -53,20 +57,20 @@ public class Ejecucion extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblGestorDeProcesos = new JLabel("Gestor de Procesos");
-		lblGestorDeProcesos.setBounds(10, 24, 621, 30);
+		lblGestorDeProcesos.setBounds(10, 24, 600, 30);
 		lblGestorDeProcesos.setFont(new Font("Sylfaen", Font.PLAIN, 24));
 		lblGestorDeProcesos.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(lblGestorDeProcesos);
 		
 		JPanel panelEstadoTerminado = new JPanel();
 		panelEstadoTerminado.setBackground(SystemColor.controlHighlight);
-		panelEstadoTerminado.setBounds(418, 325, 194, 231);
+		panelEstadoTerminado.setBounds(418, 371, 194, 279);
 		panelEstadoTerminado.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		contentPane.add(panelEstadoTerminado);
 		panelEstadoTerminado.setLayout(null);
 		
 		JScrollPane scrollInformacionEstadoTerminado = new JScrollPane();
-		scrollInformacionEstadoTerminado.setBounds(10, 22, 174, 198);
+		scrollInformacionEstadoTerminado.setBounds(10, 22, 174, 246);
 		panelEstadoTerminado.add(scrollInformacionEstadoTerminado);
 		
 		txtAInformacionEstadoTerminado = new JTextArea();
@@ -82,13 +86,13 @@ public class Ejecucion extends JFrame {
 		
 		JPanel panelEstadoEjecucion = new JPanel();
 		panelEstadoEjecucion.setBackground(SystemColor.controlHighlight);
-		panelEstadoEjecucion.setBounds(10, 325, 194, 231);
+		panelEstadoEjecucion.setBounds(10, 371, 194, 279);
 		panelEstadoEjecucion.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		contentPane.add(panelEstadoEjecucion);
 		panelEstadoEjecucion.setLayout(null);
 		
 		JScrollPane scrollInformacionEstadoEjecucion = new JScrollPane();
-		scrollInformacionEstadoEjecucion.setBounds(10, 22, 174, 198);
+		scrollInformacionEstadoEjecucion.setBounds(10, 22, 174, 246);
 		panelEstadoEjecucion.add(scrollInformacionEstadoEjecucion);
 		
 		txtAInformacionEstadoEjecucion = new JTextArea();
@@ -105,57 +109,57 @@ public class Ejecucion extends JFrame {
 		JPanel panelDetalle = new JPanel();
 		panelDetalle.setBackground(SystemColor.controlHighlight);
 		panelDetalle.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		panelDetalle.setBounds(10, 70, 194, 231);
+		panelDetalle.setBounds(10, 70, 194, 290);
 		contentPane.add(panelDetalle);
 		panelDetalle.setLayout(null);
 		
 		lblRespuestaProceso = new JLabel("");
 		lblRespuestaProceso.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblRespuestaProceso.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblRespuestaProceso.setBounds(32, 118, 141, 14);
+		lblRespuestaProceso.setBounds(32, 181, 141, 14);
 		panelDetalle.add(lblRespuestaProceso);
 		
 		lblRespuestaInstruccionLeida = new JLabel("");
 		lblRespuestaInstruccionLeida.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblRespuestaInstruccionLeida.setBounds(144, 65, 40, 14);
+		lblRespuestaInstruccionLeida.setBounds(144, 128, 40, 14);
 		panelDetalle.add(lblRespuestaInstruccionLeida);
 		
 		JLabel lblCicloDelProcesador = new JLabel("Ciclo del Procesador:");
 		lblCicloDelProcesador.setFont(new Font("Times New Roman", Font.PLAIN, 11));
-		lblCicloDelProcesador.setBounds(10, 20, 119, 14);
+		lblCicloDelProcesador.setBounds(10, 83, 119, 14);
 		panelDetalle.add(lblCicloDelProcesador);
 		
 		lblRespuestaCicloDelProcesador = new JLabel("");
-		lblRespuestaCicloDelProcesador.setBounds(144, 20, 40, 14);
+		lblRespuestaCicloDelProcesador.setBounds(144, 83, 40, 14);
 		panelDetalle.add(lblRespuestaCicloDelProcesador);
 		
 		lblRespuestaNumeroDeInstruccion = new JLabel("");
-		lblRespuestaNumeroDeInstruccion.setBounds(144, 40, 40, 14);
+		lblRespuestaNumeroDeInstruccion.setBounds(144, 103, 40, 14);
 		panelDetalle.add(lblRespuestaNumeroDeInstruccion);
 		
 		JLabel lblInstruccin = new JLabel("Instrucci\u00F3n:");
 		lblInstruccin.setFont(new Font("Times New Roman", Font.PLAIN, 11));
-		lblInstruccin.setBounds(10, 40, 119, 14);
+		lblInstruccin.setBounds(10, 103, 119, 14);
 		panelDetalle.add(lblInstruccin);
 		
 		JLabel lblInstruccionLeida = new JLabel("Instruccion Leida:");
 		lblInstruccionLeida.setFont(new Font("Times New Roman", Font.BOLD, 11));
-		lblInstruccionLeida.setBounds(10, 65, 95, 14);
+		lblInstruccionLeida.setBounds(10, 128, 95, 14);
 		panelDetalle.add(lblInstruccionLeida);
 		
 		JLabel lblProceso = new JLabel("Del Proceso:");
 		lblProceso.setFont(new Font("Times New Roman", Font.BOLD, 11));
-		lblProceso.setBounds(10, 90, 65, 14);
+		lblProceso.setBounds(10, 153, 65, 14);
 		panelDetalle.add(lblProceso);
 		
 		JLabel lblEstadoActual = new JLabel("Estado Actual:");
 		lblEstadoActual.setFont(new Font("Times New Roman", Font.PLAIN, 11));
-		lblEstadoActual.setBounds(10, 144, 70, 14);
+		lblEstadoActual.setBounds(10, 207, 70, 14);
 		panelDetalle.add(lblEstadoActual);
 		
 		lblRespuestaEstadoActual = new JLabel("");
 		lblRespuestaEstadoActual.setHorizontalAlignment(SwingConstants.CENTER);
-		lblRespuestaEstadoActual.setBounds(79, 144, 105, 14);
+		lblRespuestaEstadoActual.setBounds(79, 207, 105, 14);
 		panelDetalle.add(lblRespuestaEstadoActual);
 		
 		lblObservacion = new JLabel("");
@@ -163,7 +167,7 @@ public class Ejecucion extends JFrame {
 		lblObservacion.setVerticalAlignment(SwingConstants.TOP);
 		lblObservacion.setHorizontalAlignment(SwingConstants.CENTER);
 		lblObservacion.setForeground(Color.RED);
-		lblObservacion.setBounds(10, 186, 174, 34);
+		lblObservacion.setBounds(10, 232, 174, 47);
 		panelDetalle.add(lblObservacion);
 		
 		JLabel lblDetalleProceso = new JLabel("Detalle Proceso");
@@ -171,18 +175,32 @@ public class Ejecucion extends JFrame {
 		lblDetalleProceso.setBounds(10, 4, 174, 14);
 		panelDetalle.add(lblDetalleProceso);
 		
-		lblRespuestaProcesoResume = new JLabel("");
-		lblRespuestaProcesoResume.setBounds(127, 93, 46, 14);
-		panelDetalle.add(lblRespuestaProcesoResume);
+		JLabel lblIngreseCicloDel = new JLabel("Ingrese Ciclo del Procesador:");
+		lblIngreseCicloDel.setBounds(10, 29, 152, 14);
+		panelDetalle.add(lblIngreseCicloDel);
+		
+		txtCicloProcesador = new JTextField();
+		txtCicloProcesador.setBounds(10, 50, 85, 23);
+		panelDetalle.add(txtCicloProcesador);
+		txtCicloProcesador.setColumns(10);
+		
+		JButton btnEmpezar = new JButton("Empezar");
+		btnEmpezar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				empezar();
+			}
+		});
+		btnEmpezar.setBounds(100, 50, 85, 23);
+		panelDetalle.add(btnEmpezar);
 		JPanel panelEstadoNuevo = new JPanel();
 		panelEstadoNuevo.setBackground(SystemColor.controlHighlight);
-		panelEstadoNuevo.setBounds(214, 70, 194, 231);
+		panelEstadoNuevo.setBounds(214, 70, 194, 290);
 		panelEstadoNuevo.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		contentPane.add(panelEstadoNuevo);
 		panelEstadoNuevo.setLayout(null);
 		
 		JScrollPane scrollInformacionEstadoNuevo = new JScrollPane();
-		scrollInformacionEstadoNuevo.setBounds(10, 22, 174, 198);
+		scrollInformacionEstadoNuevo.setBounds(10, 22, 174, 257);
 		panelEstadoNuevo.add(scrollInformacionEstadoNuevo);
 		setVisible(true);
 		
@@ -199,13 +217,13 @@ public class Ejecucion extends JFrame {
 		
 		JPanel panelEstadoListo = new JPanel();
 		panelEstadoListo.setBackground(SystemColor.controlHighlight);
-		panelEstadoListo.setBounds(418, 70, 194, 231);
+		panelEstadoListo.setBounds(418, 70, 194, 290);
 		panelEstadoListo.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		contentPane.add(panelEstadoListo);
 		panelEstadoListo.setLayout(null);
 		
 		JScrollPane scrollInformacionEstadoListo = new JScrollPane();
-		scrollInformacionEstadoListo.setBounds(10, 22, 174, 198);
+		scrollInformacionEstadoListo.setBounds(10, 22, 174, 257);
 		panelEstadoListo.add(scrollInformacionEstadoListo);
 		setVisible(true);
 		
@@ -223,13 +241,13 @@ public class Ejecucion extends JFrame {
 		
 		JPanel panelEstadoBloqueado = new JPanel();
 		panelEstadoBloqueado.setBackground(SystemColor.controlHighlight);
-		panelEstadoBloqueado.setBounds(214, 325, 194, 231);
+		panelEstadoBloqueado.setBounds(214, 371, 194, 279);
 		panelEstadoBloqueado.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		contentPane.add(panelEstadoBloqueado);
 		panelEstadoBloqueado.setLayout(null);
 		
 		JScrollPane scrollInformacionEstadoBloqueado = new JScrollPane();
-		scrollInformacionEstadoBloqueado.setBounds(10, 22, 174, 198);
+		scrollInformacionEstadoBloqueado.setBounds(10, 22, 174, 246);
 		panelEstadoBloqueado.add(scrollInformacionEstadoBloqueado);
 		setVisible(true);
 		
@@ -272,8 +290,6 @@ public class Ejecucion extends JFrame {
 			lblRespuestaProceso.setText(parametros);
 		}else if ( estadoInstruccionProceso == "Mensaje"){
 			lblObservacion.setText(parametros);
-		}else if ( estadoInstruccionProceso == "ProcesoResume"){
-			lblRespuestaProcesoResume.setText(parametros);
 		}
 	}
 	
@@ -282,5 +298,8 @@ public class Ejecucion extends JFrame {
 	}
 	public void setLblObservacion(JLabel lblObservacion) {
 		this.lblObservacion = lblObservacion;
+	}
+	public void empezar(){
+		
 	}
 }

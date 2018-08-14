@@ -3,6 +3,7 @@ import java.io.Serializable;
 import java.util.Random;
 
 public class AtributosProceso implements Serializable {
+	private static final long serialVersionUID = 1L;
 	//Declaracion instancia de variables que definen los atributos de un proceso.
 	private String identificadorProceso;
 	private int estadoProceso; 
