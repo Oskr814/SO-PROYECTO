@@ -21,23 +21,23 @@ public class ArchivoTexto {
 			Path path;
 			switch(lista.get(lista.size()-1).getEstadoProceso()) {
 			case 0: //Estado ejecucion nuevo
-				path = Paths.get("Procesos/Nuevo/Procesos[Nuevos].txt");
+				path = Paths.get("../Procesos/Nuevo/Procesos[Nuevos].txt");
 				estado = "Nuevo";
 				break;
 			case 1: //Estado ejecucion listo
-				path = Paths.get("Procesos/Listo/Procesos[Listos].txt");
+				path = Paths.get("../Procesos/Listo/Procesos[Listos].txt");
 				estado = "Listo";
 				break;
 			case 2: //Estado ejecucion ejecucion
-				path = Paths.get("Procesos/Ejecucion/Procesos[Ejecucion].txt");
+				path = Paths.get("../Procesos/Ejecucion/Procesos[Ejecucion].txt");
 				estado = "Ejecucion";
 				break;
 			case 3: //Estado ejecucion bloqueado
-				path = Paths.get("Procesos/Bloqueado/Procesos[Bloqueados].txt");
+				path = Paths.get("../Procesos/Bloqueado/Procesos[Bloqueados].txt");
 				estado = "Bloqueado";
 				break;
 			case 4: ////Estado ejecucion terminado
-				path = Paths.get("Procesos/Terminado/Procesos[Terminados].txt");
+				path = Paths.get("../Procesos/Terminado/Procesos[Terminados].txt");
 				estado = "Terminado";
 				break;
 			default:
@@ -70,7 +70,7 @@ public class ArchivoTexto {
 		BufferedWriter br;
 		try {
 		for(int i = 0; i<lista.size() ; i++) {	//Creamos todo
-		Path path = Paths.get("Procesos/"+estado+"/"+lista.get(i).getIdentificadorProceso()+".txt");
+		Path path = Paths.get("../Procesos/"+estado+"/"+lista.get(i).getIdentificadorProceso()+".txt");
 			br = Files.newBufferedWriter(path, Charset.defaultCharset(), StandardOpenOption.CREATE);
 		
 			for(int j = 1; j<=Integer.parseInt(lista.get(i).getCantidadInstrucciones()); j++) {
@@ -95,7 +95,7 @@ public class ArchivoTexto {
 	     
 			try {
 
-			    File[] archivos = new File("Procesos/"+estado+"/").listFiles(new FileFilter() {
+			    File[] archivos = new File("../Procesos/"+estado+"/").listFiles(new FileFilter() {
 			
 			        public boolean accept(File archivo) {
 			
