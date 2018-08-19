@@ -24,7 +24,7 @@ import procesos.ArchivoTexto;
 import procesos.AtributosProceso;
 import procesos.Escritura_y_Lectura;
 
-public class Ejecucion extends JFrame {
+public class Ejecucion extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel contentPane;
@@ -74,7 +74,7 @@ public class Ejecucion extends JFrame {
 	private Escritura_y_Lectura gestor = new Escritura_y_Lectura();
 	private Random random = new Random();
 	
-	String ciclosDelProcesardor;
+	int ciclosDelProcesardor;
 	private int pausa = 1000;
 
 	public Ejecucion() {
@@ -184,18 +184,16 @@ public class Ejecucion extends JFrame {
 		txtCicloProcesador.setColumns(10);
 		
 		btnEmpezar = new JButton("Empezar");		
-		/*btnEmpezar.addActionListener(new ActionListener() {
+		btnEmpezar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ciclosDelProcesardor = txtCicloProcesador.getText();
-				try {
-					empezar();
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-				}
+				String ciclos = txtCicloProcesador.getText();
+				ciclosDelProcesardor =  Integer.parseInt(ciclos);
+				System.out.println(ciclosDelProcesardor);
+				empezar();
 			}
-		});*/
+		});
 		btnEmpezar.setBounds(100, 50, 85, 23);
-		btnEmpezar.addActionListener((ActionListener) this);
+		btnEmpezar.addActionListener(this);
 		
 		panelDetalle.add(btnEmpezar);
 		panelEstadoNuevo = new JPanel();
@@ -353,7 +351,7 @@ public class Ejecucion extends JFrame {
 	
 	public void empezar(){
 		int n=0;
-		if ( ciclosDelProcesardor.equals("0") || ciclosDelProcesardor.equals("")){
+		if ( ciclosDelProcesardor==0 ){
 			mostrarInformacionEstados("Ingrese cuantos ciclos desea", "Mensaje");
 		}else{		
 			while(true) {	
@@ -376,7 +374,7 @@ public class Ejecucion extends JFrame {
 	public void cicloEjecucion () {
 		int n = 0;
 		int i = -1;
-		while (n < Integer.parseInt(ciclosDelProcesardor)) {//cantidad de ciclos dados por el usuario, instrucciones que se leerán a la vez
+		while (n < ciclosDelProcesardor) {//cantidad de ciclos dados por el usuario, instrucciones que se leerán a la vez
 			
 			n++;
 			
@@ -473,7 +471,7 @@ public class Ejecucion extends JFrame {
 		}
 	}
 	private boolean estadoEjecucion_Listo(AtributosProceso proceso) { //Cambio de estado de Ejecucion a listo, asumiento que los procesos entran a lista ejecucion por prioridad
-		if (proceso.getCiclosEjecucion() == Integer.parseInt(ciclosDelProcesardor)) {
+		if (proceso.getCiclosEjecucion() == ciclosDelProcesardor) {
 			proceso.SetCiclosEjecucion(0);
 				gestor.getListaProcesosListo().add(gestor.getListaProcesosEjecutando().get(gestor.buscarProceso(proceso.getIdentificadorProceso(), gestor.getListaProcesosEjecutando())));
 				gestor.getListaProcesosListo().get(gestor.buscarProceso(proceso.getIdentificadorProceso(), gestor.getListaProcesosListo())).setEstadoProceso(1);
