@@ -52,7 +52,8 @@ public class Ejecucion extends JFrame {
 	private Random random = new Random();
 	JButton btnEmpezar = null;
 	private JTextField txtCicloProcesador;
-	private int maximoProcesos = 5;
+	private int temporizador = 5;
+	private int maximoProcesos = 10;
 	private int ciclosDelProcesador = 0; //Esta variable la defino de manera constante para fines de codificacion, deberia ser especificada por el usuario.
 	private int cicloActual = 0;
 	
@@ -94,7 +95,7 @@ public class Ejecucion extends JFrame {
 			System.out.println("se ha creado un proceso: " + listaProcesosNuevo.get(buscarProceso(listaID_Utilizables.get(IndiceUtilizado), listaProcesosNuevo)).toString() + "---> NUEVO");
 			mostrarInformacionEstados();
 			listaID_Utilizables.remove(IndiceUtilizado);//Eliminamos el item para evitar que se repita nuestro ID que debe ser único
-			Thread.sleep(1000);
+			Thread.sleep(100);
 		}
 	}
 	
@@ -194,14 +195,13 @@ public class Ejecucion extends JFrame {
 		
 	private boolean estadoEjecucion_Bloqueado (String instruccionBloqueo, String ID) throws InterruptedException {//funcion que revisará si el proceso llego a la instruccion de bloqueo y hace la transicion 
 		if(listaProcesosEjecutando.get(buscarIndice(ID, listaProcesosEjecutando)).getInstruccionesLeidas() == Integer.parseInt(instruccionBloqueo)) {
-			listaProcesosBloqueado.add(listaProcesosEjecutando.get(buscarIndice(ID, listaProcesosEjecutando)));
-			listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).setEstadoProceso(3);
-			System.out.println("se ha pasado el proceso: " +  listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).toString() + "----> 'EJECUCION' a 'BLOQUEADO'");
-			
-			listaProcesosEjecutando.remove(buscarIndice(ID, listaProcesosEjecutando));
-			mostrarInformacionEstados();
-			Thread.sleep(500);
-			return true;
+				listaProcesosBloqueado.add(listaProcesosEjecutando.get(buscarIndice(ID, listaProcesosEjecutando)));
+				listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).setEstadoProceso(3);
+				System.out.println("se ha pasado el proceso: " +  listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).toString() + "----> 'EJECUCION' a 'BLOQUEADO'");
+				listaProcesosEjecutando.remove(buscarIndice(ID, listaProcesosEjecutando));
+				mostrarInformacionEstados();
+				//Thread.sleep(500);
+				return true;
 		}else {
 			return false;
 		}
@@ -210,13 +210,14 @@ public class Ejecucion extends JFrame {
 	public void estadoBloqueado_Listo(String ID) throws InterruptedException {//Función que determina si un proceso cumplió con los ciclos respectivos para estar en la lista de "BLOQUEO" y los pasa a "LISTO"
 		if(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).getEventoBloqueo() == 3) {
 			if(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).getCiclosEnBloqueo() == 13) {
-				listaProcesosListo.add(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)));
-				listaProcesosListo.get(buscarIndice(ID, listaProcesosListo)).setEstadoProceso(1);
-				System.out.println("se ha pasado el proceso: " +  listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).toString() + "----> 'BLOQUEADO' A 'LISTO' 13-CICLOS");
-				
-				listaProcesosBloqueado.remove(buscarIndice(ID, listaProcesosBloqueado));
-				mostrarInformacionEstados();
-				Thread.sleep(500);
+				if(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).getCiclosEjecucion() == temporizador) {
+					listaProcesosListo.add(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)));
+					listaProcesosListo.get(buscarIndice(ID, listaProcesosListo)).setEstadoProceso(1);
+					System.out.println("se ha pasado el proceso: " +  listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).toString() + "----> 'BLOQUEADO' A 'LISTO' 13-CICLOS");
+					listaProcesosBloqueado.remove(buscarIndice(ID, listaProcesosBloqueado));
+					mostrarInformacionEstados();
+					//Thread.sleep(500);
+				}
 			}
 		}else {
 			if(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).getCiclosEnBloqueo() == 27) {
@@ -226,20 +227,20 @@ public class Ejecucion extends JFrame {
 				
 				listaProcesosBloqueado.remove(buscarIndice(ID, listaProcesosBloqueado));
 				mostrarInformacionEstados();
-				Thread.sleep(1000);
+				//Thread.sleep(1000);
 			}
 		}
 	}
 	
 	private boolean estadoEjecucion_Listo(AtributosProceso proceso) throws InterruptedException { //Cambio de estado de Ejecucion a listo, asumiento que los procesos entran a lista ejecucion por prioridad
-		if (proceso.getCiclosEjecucion() == ciclosDelProcesador) {
+		if (proceso.getCiclosEjecucion() == temporizador) {
 			proceso.SetCiclosEjecucion(0);
 				listaProcesosListo.add(listaProcesosEjecutando.get(buscarProceso(proceso.getIdentificadorProceso(), listaProcesosEjecutando)));
 				listaProcesosListo.get(buscarProceso(proceso.getIdentificadorProceso(), listaProcesosListo)).setEstadoProceso(1);
 				listaProcesosEjecutando.remove(proceso);
 				System.out.println("se ha pasado el proceso: " +  listaProcesosListo.get(buscarIndice(proceso.getIdentificadorProceso(), listaProcesosListo)).toString() + "----> 'EJECUCION' A 'LISTO'");
 				mostrarInformacionEstados();
-				Thread.sleep(500);
+				//Thread.sleep(500);
 				return true;
 			}
 		return false;
@@ -253,7 +254,7 @@ public class Ejecucion extends JFrame {
 			
 			listaProcesosEjecutando.remove(proceso);
 			mostrarInformacionEstados();
-			Thread.sleep(500);
+			//Thread.sleep(100);
 			return true;
 		}
 		return false;
@@ -310,8 +311,8 @@ public class Ejecucion extends JFrame {
 				estadoListo_Ejecucion();
 				
 				
-				System.out.println("Instruccion #"+ n);
-				Thread.sleep(1000);
+				System.out.println("Ciclo #"+ n);
+				Thread.sleep(300);
 				
 				if((i = buscarPrioridad(1, listaProcesosEjecutando)) != -1){//lo importante es buscar la prioridad mayor y ejecutar ese proceso
 					if(!EstadoEjecucion_Terminado(listaProcesosEjecutando.get(i))) {//determinará si el proceso ha finalizado
@@ -320,6 +321,7 @@ public class Ejecucion extends JFrame {
 								listaProcesosEjecutando.get(i).SetCiclosEjecucion();//aumentará la variable cada que se lean las instrucciones
 								listaProcesosEjecutando.get(i).setInstruccionesLeidas();//se leerá la instruccion siguiente
 								mostrarInformacionEstados(listaProcesosEjecutando.get(i).getInstruccionesLeidas(), listaProcesosEjecutando.get(i).toString(), listaProcesosEjecutando.get(i).getInstrucionBloqueo());
+								Thread.sleep(100);
 								System.out.println("se leyó la instruccion: " + listaProcesosEjecutando.get(i).getInstruccionesLeidas() + " del proceso: " + listaProcesosEjecutando.get(i).toString());
 								mostrarInformacionEstados();
 							}
@@ -333,6 +335,7 @@ public class Ejecucion extends JFrame {
 									listaProcesosEjecutando.get(i).SetCiclosEjecucion();
 									listaProcesosEjecutando.get(i).setInstruccionesLeidas();//se leerá la instruccion siguiente
 									mostrarInformacionEstados(listaProcesosEjecutando.get(i).getInstruccionesLeidas(), listaProcesosEjecutando.get(i).toString(), listaProcesosEjecutando.get(i).getInstrucionBloqueo());
+									Thread.sleep(100);
 									System.out.println("se leyó la instruccion: " + listaProcesosEjecutando.get(i).getInstruccionesLeidas() + " del proceso: " + listaProcesosEjecutando.get(i).toString());
 									mostrarInformacionEstados();
 								}
@@ -346,6 +349,7 @@ public class Ejecucion extends JFrame {
 										listaProcesosEjecutando.get(i).SetCiclosEjecucion();
 										listaProcesosEjecutando.get(i).setInstruccionesLeidas();//se leerá la instruccion siguiente
 										mostrarInformacionEstados(listaProcesosEjecutando.get(i).getInstruccionesLeidas(), listaProcesosEjecutando.get(i).toString(), listaProcesosEjecutando.get(i).getInstrucionBloqueo());
+										Thread.sleep(100);
 										System.out.println("se leyó la instruccion: " + listaProcesosEjecutando.get(i).getInstruccionesLeidas() + " del proceso: " + listaProcesosEjecutando.get(i).toString());
 										mostrarInformacionEstados();
 									}
@@ -362,6 +366,7 @@ public class Ejecucion extends JFrame {
 				for(int j=0 ; j<listaProcesosBloqueado.size() ; j++) {
 					listaProcesosBloqueado.get(j).setCiclosEnBloqueo(listaProcesosBloqueado.get(j).getCiclosEnBloqueo()+1);
 					estadoBloqueado_Listo(listaProcesosBloqueado.get(j).getIdentificadorProceso());
+					Thread.sleep(100);
 					mostrarInformacionEstados();
 				}
 			
@@ -604,17 +609,16 @@ public class Ejecucion extends JFrame {
 	}
 	
 	public void mostrarInformacionEstados(){//echarle un ojo despues
-		
-				txtAInformacionEstadoNuevo.setText(concatenarLista(listaProcesosNuevo));
-				lblRespuestaEstadoActual.setText("Nuevo");
-				txtAInformacionEstadoListo.setText(concatenarLista(listaProcesosListo));
-				lblRespuestaEstadoActual.setText("Listo");
-				txtAInformacionEstadoEjecucion.setText(concatenarLista(listaProcesosEjecutando));
-				lblRespuestaEstadoActual.setText("Ejecución");
-				txtAInformacionEstadoBloqueado.setText(concatenarLista(listaProcesosBloqueado));
-				lblRespuestaEstadoActual.setText("Bloqueado");
-				txtAInformacionEstadoTerminado.setText(concatenarLista(listaProcesosTerminado));
-				lblRespuestaEstadoActual.setText("Terminado");
+		txtAInformacionEstadoNuevo.setText(concatenarLista(listaProcesosNuevo));
+		lblRespuestaEstadoActual.setText("Nuevo");
+		txtAInformacionEstadoListo.setText(concatenarLista(listaProcesosListo));
+		lblRespuestaEstadoActual.setText("Listo");
+		txtAInformacionEstadoEjecucion.setText(concatenarLista(listaProcesosEjecutando));
+		lblRespuestaEstadoActual.setText("Ejecución");
+		txtAInformacionEstadoBloqueado.setText(concatenarLista(listaProcesosBloqueado));
+		lblRespuestaEstadoActual.setText("Bloqueado");
+		txtAInformacionEstadoTerminado.setText(concatenarLista(listaProcesosTerminado));
+		lblRespuestaEstadoActual.setText("Terminado");
 	}
 	
 	public void mostrarInformacionEstados(int numeroInstruccion, String NombreProceso, String instruccionBloqueo){//echarle un ojo despues
@@ -632,7 +636,6 @@ public class Ejecucion extends JFrame {
 	public void setLblObservacion(JLabel lblObservacion) {
 		this.lblObservacion = lblObservacion;
 	}
-	
 	
 	private String concatenarLista(ArrayList<AtributosProceso> lista) {
 		String buffer = "";

@@ -12,7 +12,7 @@ public class AtributosProceso implements Serializable {
 	private String cantidadInstrucciones;
 	private String instrucionBloqueo;
 	private int eventoBloqueo;
-	private int ciclosEjecucion = 0;
+	private int ciclosEjecucion = 0;//la cuenta de cuentantos ciclos del procesador lleva en "EJECUCION"
 	private int ciclosEnBloqueo = 0;//lleva la cuenta de cuantos ciclos tiene de estar el "bloqueo"
 	
 	//Declaracion instancia de variable para generar numeros aleatorios
