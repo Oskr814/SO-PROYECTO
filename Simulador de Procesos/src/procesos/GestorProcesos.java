@@ -1,5 +1,10 @@
 package procesos;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -11,10 +16,20 @@ public class GestorProcesos {
 				
 		GuardarEstadoEjecucionProcesos procesos = new GuardarEstadoEjecucionProcesos();
 		
-		Ejecucion gestor = new Ejecucion();
+		Ejecucion gestor = null;
 		
-		//gestor.mostrarInformacionEstados();
-		//Thread.sleep(5000);
+		try {
+			gestor = new Ejecucion();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		File carpeta = new File("C:/Users/Public/RegistroProcesosGrupo6");
+		carpeta.mkdir();
+		
+		
+		
 		
 		while(true) {
 

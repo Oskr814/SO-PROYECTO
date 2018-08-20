@@ -20,23 +20,23 @@ public class ArchivoTexto {
 		try{
 			Path path;
 			switch(lista.get(lista.size()-1).getEstadoProceso()) {
-			case 0: //Estado ejecucion nuevo
+			case 0: //Estado  nuevo
 				path = Paths.get("Procesos/Nuevo/Procesos[Nuevos].txt");
 				estado = "Nuevo";
 				break;
-			case 1: //Estado ejecucion listo
+			case 1: //Estado  listo
 				path = Paths.get("Procesos/Listo/Procesos[Listos].txt");
 				estado = "Listo";
 				break;
-			case 2: //Estado ejecucion ejecucion
+			case 2: //Estado  ejecucion
 				path = Paths.get("Procesos/Ejecucion/Procesos[Ejecucion].txt");
 				estado = "Ejecucion";
 				break;
-			case 3: //Estado ejecucion bloqueado
+			case 3: //Estado  bloqueado
 				path = Paths.get("Procesos/Bloqueado/Procesos[Bloqueados].txt");
 				estado = "Bloqueado";
 				break;
-			case 4: ////Estado ejecucion terminado
+			case 4: ////Estado  terminado
 				path = Paths.get("Procesos/Terminado/Procesos[Terminados].txt");
 				estado = "Terminado";
 				break;

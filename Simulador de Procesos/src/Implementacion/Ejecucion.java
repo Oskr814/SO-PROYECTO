@@ -21,8 +21,12 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Random;
@@ -46,9 +50,21 @@ public class Ejecucion extends JFrame {
 	private ArrayList<AtributosProceso> listaProcesosListo  = new ArrayList<AtributosProceso>();
 	private ArrayList<AtributosProceso> listaProcesosEjecutando = new ArrayList<AtributosProceso>();
 	private ArrayList<AtributosProceso> listaProcesosBloqueado = new ArrayList<AtributosProceso>();
-	private ArrayList<AtributosProceso> listaProcesosNuevo = new ArrayList<AtributosProceso>(10);
+	private ArrayList<AtributosProceso> listaProcesosNuevo = new ArrayList<AtributosProceso>();
 	private ArrayList<AtributosProceso> listaProcesosTerminado = new ArrayList<AtributosProceso>();
 	public ArchivoTexto archivo = new ArchivoTexto();
+	ObjectOutputStream escribirNuevos = null;
+	ObjectOutputStream escribirListos = null;
+	ObjectOutputStream escribirEjecutando = null;
+	ObjectOutputStream escribirBloqueados = null;
+	ObjectOutputStream escribirTerminados = null;
+	
+	ObjectInputStream recuperaNuevo = null;
+	ObjectInputStream recuperaListos = null;
+	ObjectInputStream recuperaEjecucion = null;
+	ObjectInputStream recuperaBloqueado = null;
+	ObjectInputStream recuperaTerminado = null;
+	
 	private Random random = new Random();
 	JButton btnEmpezar = null;
 	private JTextField txtCicloProcesador;
@@ -62,7 +78,8 @@ public class Ejecucion extends JFrame {
 		return ciclosDelProcesador;
 	}
 
-	public Ejecucion() {
+	
+	public Ejecucion() throws ClassNotFoundException {
 		inicializarVentana();
 		
 		for(int i=0 ; i<10000 ; i++) {//estructura correcta que debe tener el ID asi que se harán como String
@@ -85,7 +102,48 @@ public class Ejecucion extends JFrame {
 			}
 		});
 
+		try {
+			escribirNuevos = new ObjectOutputStream(new FileOutputStream("C:/Users/Public/RegistroProcesosGrupo6/EstadoNuevo.tiger"));
+			escribirListos = new ObjectOutputStream(new FileOutputStream("C:/Users/Public/RegistroProcesosGrupo6/EstadoListo.tiger"));
+			escribirEjecutando = new ObjectOutputStream(new FileOutputStream("C:/Users/Public/RegistroProcesosGrupo6/EstadoEjecucion.tiger"));
+			escribirBloqueados = new ObjectOutputStream(new FileOutputStream("C:/Users/Public/RegistroProcesosGrupo6/EstadoBloqueado.tiger"));
+			escribirTerminados = new ObjectOutputStream(new FileOutputStream("C:/Users/Public/RegistroProcesosGrupo6/EstadoTerminado.tiger"));
+		}catch(Exception e) {
+			System.out.println("Problema en la escritura");
+		}
+		
+		try {
+			recuperaNuevo = new ObjectInputStream(new FileInputStream("C:/Users/Public/RegistroProcesosGrupo6/EstadoNuevo.tiger"));
+			recuperaListos = new ObjectInputStream(new FileInputStream("C:/Users/Public/RegistroProcesosGrupo6/EstadoListo.tiger"));
+			recuperaEjecucion = new ObjectInputStream(new FileInputStream("C:/Users/Public/RegistroProcesosGrupo6/EstadoEjecucion.tiger"));
+			recuperaBloqueado = new ObjectInputStream(new FileInputStream("C:/Users/Public/RegistroProcesosGrupo6/EstadoBloqueado.tiger"));
+			recuperaTerminado = new ObjectInputStream(new FileInputStream("C:/Users/Public/RegistroProcesosGrupo6/EstadoTerminado.tiger"));
+			
+			listaProcesosNuevo = (ArrayList<AtributosProceso>) recuperaNuevo.readObject();
+			listaProcesosListo = (ArrayList<AtributosProceso>) recuperaListos.readObject();
+			listaProcesosEjecutando = (ArrayList<AtributosProceso>) recuperaEjecucion.readObject();
+			listaProcesosBloqueado = (ArrayList<AtributosProceso>) recuperaBloqueado.readObject();
+			listaProcesosTerminado = (ArrayList<AtributosProceso>) recuperaTerminado.readObject();
+			
+			recuperaNuevo.close();
+			recuperaListos.close();
+			recuperaEjecucion.close();
+			recuperaBloqueado.close();
+			recuperaTerminado.close();
+			
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			System.out.println("Problema en la Lectura");
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			System.out.println("Problema en la Lectura");
+			e1.printStackTrace();
+		}
+		
 		inicializarElementos();
+		
+		
 	}
 	
 	public void procesoNuevo () throws InterruptedException {
@@ -386,6 +444,25 @@ public class Ejecucion extends JFrame {
 		archivo.escrbirArchivoPlanoEstado(listaProcesosBloqueado);
 		if(listaProcesosTerminado.size()>0)
 		archivo.escrbirArchivoPlanoEstado(listaProcesosTerminado);
+		
+		try {
+			
+			//guardado de las listas para la recuperacion
+			escribirNuevos.writeObject(listaProcesosNuevo);
+			escribirListos.writeObject(listaProcesosListo);
+			escribirEjecutando.writeObject(listaProcesosEjecutando);
+			escribirBloqueados.writeObject(listaProcesosBloqueado);
+			escribirTerminados.writeObject(listaProcesosTerminado);
+			//cerrado de flujo
+			escribirNuevos.close();
+			escribirListos.close();
+			escribirEjecutando.close();
+			escribirBloqueados.close();
+			escribirTerminados.close();
+		
+		}catch(Exception e){
+			
+		}
 	}
 
 	public void inicializarVentana(){
