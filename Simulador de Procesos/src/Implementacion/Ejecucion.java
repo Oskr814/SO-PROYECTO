@@ -59,12 +59,6 @@ public class Ejecucion extends JFrame {
 	ObjectOutputStream escribirBloqueados = null;
 	ObjectOutputStream escribirTerminados = null;
 	
-	ObjectInputStream recuperaNuevo = null;
-	ObjectInputStream recuperaListos = null;
-	ObjectInputStream recuperaEjecucion = null;
-	ObjectInputStream recuperaBloqueado = null;
-	ObjectInputStream recuperaTerminado = null;
-	
 	private Random random = new Random();
 	JButton btnEmpezar = null;
 	private JTextField txtCicloProcesador;
@@ -72,16 +66,14 @@ public class Ejecucion extends JFrame {
 	private int maximoProcesos = 10;
 	private int ciclosDelProcesador = 0; //Esta variable la defino de manera constante para fines de codificacion, deberia ser especificada por el usuario.
 	private int cicloActual = 0;
-	
-	
+
 	public int getCiclosDelProcesador() {
 		return ciclosDelProcesador;
 	}
 
-	
-	public Ejecucion() throws ClassNotFoundException {
-		inicializarVentana();
-		
+	@SuppressWarnings("unchecked")
+	public Ejecucion()  {
+		inicializarVentana();		
 		for(int i=0 ; i<10000 ; i++) {//estructura correcta que debe tener el ID asi que se harán como String
 			if(i<=9) {
 				listaID_Utilizables.add(i, "000"+Integer.toString(i));
@@ -103,33 +95,42 @@ public class Ejecucion extends JFrame {
 		});
 
 		try {
-			escribirNuevos = new ObjectOutputStream(new FileOutputStream("C:/Users/Public/RegistroProcesosGrupo6/EstadoNuevo.tiger"));
-			escribirListos = new ObjectOutputStream(new FileOutputStream("C:/Users/Public/RegistroProcesosGrupo6/EstadoListo.tiger"));
-			escribirEjecutando = new ObjectOutputStream(new FileOutputStream("C:/Users/Public/RegistroProcesosGrupo6/EstadoEjecucion.tiger"));
-			escribirBloqueados = new ObjectOutputStream(new FileOutputStream("C:/Users/Public/RegistroProcesosGrupo6/EstadoBloqueado.tiger"));
-			escribirTerminados = new ObjectOutputStream(new FileOutputStream("C:/Users/Public/RegistroProcesosGrupo6/EstadoTerminado.tiger"));
+			escribirNuevos = new ObjectOutputStream(new FileOutputStream("RegistroProcesosGrupo6/EstadoNuevo.txt"));
+			escribirListos = new ObjectOutputStream(new FileOutputStream("RegistroProcesosGrupo6/EstadoListo.txt"));
+			escribirEjecutando = new ObjectOutputStream(new FileOutputStream("RegistroProcesosGrupo6/EstadoEjecucion.txt"));
+			escribirBloqueados = new ObjectOutputStream(new FileOutputStream("RegistroProcesosGrupo6/EstadoBloqueado.txt"));
+			escribirTerminados = new ObjectOutputStream(new FileOutputStream("RegistroProcesosGrupo6/EstadoTerminado.txt"));
 		}catch(Exception e) {
 			System.out.println("Problema en la escritura");
 		}
 		
 		try {
-			recuperaNuevo = new ObjectInputStream(new FileInputStream("C:/Users/Public/RegistroProcesosGrupo6/EstadoNuevo.tiger"));
-			recuperaListos = new ObjectInputStream(new FileInputStream("C:/Users/Public/RegistroProcesosGrupo6/EstadoListo.tiger"));
-			recuperaEjecucion = new ObjectInputStream(new FileInputStream("C:/Users/Public/RegistroProcesosGrupo6/EstadoEjecucion.tiger"));
-			recuperaBloqueado = new ObjectInputStream(new FileInputStream("C:/Users/Public/RegistroProcesosGrupo6/EstadoBloqueado.tiger"));
-			recuperaTerminado = new ObjectInputStream(new FileInputStream("C:/Users/Public/RegistroProcesosGrupo6/EstadoTerminado.tiger"));
 			
-			listaProcesosNuevo = (ArrayList<AtributosProceso>) recuperaNuevo.readObject();
-			listaProcesosListo = (ArrayList<AtributosProceso>) recuperaListos.readObject();
-			listaProcesosEjecutando = (ArrayList<AtributosProceso>) recuperaEjecucion.readObject();
-			listaProcesosBloqueado = (ArrayList<AtributosProceso>) recuperaBloqueado.readObject();
-			listaProcesosTerminado = (ArrayList<AtributosProceso>) recuperaTerminado.readObject();
 			
-			recuperaNuevo.close();
-			recuperaListos.close();
-			recuperaEjecucion.close();
-			recuperaBloqueado.close();
-			recuperaTerminado.close();
+			
+			try {
+				ObjectInputStream recuperaNuevo = new ObjectInputStream(new FileInputStream("RegistroProcesosGrupo6/EstadoNuevo.txt"));
+				ObjectInputStream recuperaListos = new ObjectInputStream(new FileInputStream("RegistroProcesosGrupo6/EstadoListo.txt"));
+				ObjectInputStream recuperaEjecucion = new ObjectInputStream(new FileInputStream("RegistroProcesosGrupo6/EstadoEjecucion.txt"));
+				ObjectInputStream recuperaBloqueado = new ObjectInputStream(new FileInputStream("RegistroProcesosGrupo6/EstadoBloqueado.txt"));
+				ObjectInputStream recuperaTerminado = new ObjectInputStream(new FileInputStream("RegistroProcesosGrupo6/EstadoTerminado.txt"));
+				
+				this.listaProcesosNuevo = (ArrayList<AtributosProceso>) recuperaNuevo.readObject();
+				this.listaProcesosListo = (ArrayList<AtributosProceso>) recuperaListos.readObject();
+				this.listaProcesosEjecutando = (ArrayList<AtributosProceso>) recuperaEjecucion.readObject();
+				this.listaProcesosBloqueado = (ArrayList<AtributosProceso>) recuperaBloqueado.readObject();
+				this.listaProcesosTerminado = (ArrayList<AtributosProceso>) recuperaTerminado.readObject();
+				
+				recuperaNuevo.close();
+				recuperaListos.close();
+				recuperaEjecucion.close();
+				recuperaBloqueado.close();
+				recuperaTerminado.close();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
@@ -142,7 +143,6 @@ public class Ejecucion extends JFrame {
 		}
 		
 		inicializarElementos();
-		
 		
 	}
 	
@@ -169,19 +169,16 @@ public class Ejecucion extends JFrame {
 				mostrarInformacionEstados();
 				procesoNuevo();
 				i=-1;//reiniciamos el indice para no
-				//Thread.sleep(1000);	
 			}else {
 				if (hayPrioridad(2, listaProcesosNuevo)) {//se buscarán los procesos de media prioridad y si existen entrará al 'for' 
 					i = buscarPrioridad(2, listaProcesosNuevo);
 					listaProcesosListo.add(listaProcesosNuevo.get(i));
 					listaProcesosListo.get(buscarProceso(listaProcesosNuevo.get(i).getIdentificadorProceso(), listaProcesosListo)).setEstadoProceso(1);;
 					System.out.println("se ha pasado el proceso: " +  listaProcesosListo.get(buscarProceso(listaProcesosNuevo.get(i).getIdentificadorProceso(), listaProcesosListo)).toString() + "----> 'NUEVO' a 'LISTO'");
-					
 					listaProcesosNuevo.remove(i);
 					mostrarInformacionEstados();
 					procesoNuevo();
 					i=-1;
-					//Thread.sleep(1000);	
 				}else {
 					if (hayPrioridad(3, listaProcesosNuevo)) {
 						i = buscarPrioridad(3, listaProcesosNuevo);
@@ -192,16 +189,13 @@ public class Ejecucion extends JFrame {
 						listaProcesosNuevo.remove(i);
 						mostrarInformacionEstados();
 						procesoNuevo();
-						i=-1;
-						//Thread.sleep(1000);	
+						i=-1;	
 					}else {
 						procesoNuevo();
 					}
 				}
 			}
 		}
-		
-		
 	}
 	
 	public void estadoListo_Ejecucion() throws InterruptedException {//funcion que pasará procesos desde "LISTO" a "EJECUCION"
@@ -217,7 +211,6 @@ public class Ejecucion extends JFrame {
 				mostrarInformacionEstados();
 				estadoNuevo_Listo();
 				i = -1;//reiniciamos el contador
-				//Thread.sleep(1000);
 			}else {
 				if (hayPrioridad(2, listaProcesosListo)) {//Corrobora si existen procesos con esa maxima prioridad en la lista para pasarlos a "EJECUCION"
 					i = buscarPrioridad(2, listaProcesosListo);//almacena el indice del elemento de la lista con la prioridad buscada
@@ -229,7 +222,6 @@ public class Ejecucion extends JFrame {
 					mostrarInformacionEstados();
 					estadoNuevo_Listo();
 					i = -1;//reiniciamos el contador;
-					//Thread.sleep(1000);
 				}else {
 					if (hayPrioridad(3, listaProcesosListo)) {//Corrobora si existen procesos con esa maxima prioridad en la lista para pasarlos a "EJECUCION"
 						i = buscarPrioridad(3, listaProcesosListo);//almacena el indice del elemento de la lista con la prioridad buscada
@@ -241,7 +233,6 @@ public class Ejecucion extends JFrame {
 						mostrarInformacionEstados();
 						estadoNuevo_Listo();
 						i = -1;//reiniciamos el contador
-						//Thread.sleep(1000);
 					}else {
 						estadoNuevo_Listo();
 						
@@ -258,7 +249,6 @@ public class Ejecucion extends JFrame {
 				System.out.println("se ha pasado el proceso: " +  listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).toString() + "----> 'EJECUCION' a 'BLOQUEADO'");
 				listaProcesosEjecutando.remove(buscarIndice(ID, listaProcesosEjecutando));
 				mostrarInformacionEstados();
-				//Thread.sleep(500);
 				return true;
 		}else {
 			return false;
@@ -274,18 +264,14 @@ public class Ejecucion extends JFrame {
 					System.out.println("se ha pasado el proceso: " +  listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).toString() + "----> 'BLOQUEADO' A 'LISTO' 13-CICLOS");
 					listaProcesosBloqueado.remove(buscarIndice(ID, listaProcesosBloqueado));
 					mostrarInformacionEstados();
-					//Thread.sleep(500);
 				}
 			}
 		}else {
 			if(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).getCiclosEnBloqueo() == 27) {
 				listaProcesosListo.add(listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)));
 				listaProcesosListo.get(buscarIndice(ID, listaProcesosListo)).setEstadoProceso(1);
-				//System.out.println("se ha pasado el proceso: " +  listaProcesosBloqueado.get(buscarIndice(ID, listaProcesosBloqueado)).toString() + "----> 'BLOQUEADO' A 'LISTO' 27-CICLOS");
-				
 				listaProcesosBloqueado.remove(buscarIndice(ID, listaProcesosBloqueado));
 				mostrarInformacionEstados();
-				//Thread.sleep(1000);
 			}
 		}
 	}
@@ -298,7 +284,6 @@ public class Ejecucion extends JFrame {
 				listaProcesosEjecutando.remove(proceso);
 				System.out.println("se ha pasado el proceso: " +  listaProcesosListo.get(buscarIndice(proceso.getIdentificadorProceso(), listaProcesosListo)).toString() + "----> 'EJECUCION' A 'LISTO'");
 				mostrarInformacionEstados();
-				//Thread.sleep(500);
 				return true;
 			}
 		return false;
@@ -309,10 +294,8 @@ public class Ejecucion extends JFrame {
 			listaProcesosTerminado.add(proceso);
 			listaProcesosTerminado.get(buscarProceso(proceso.getIdentificadorProceso(), listaProcesosTerminado)).setEstadoProceso(4);
 			System.out.println("el proceso " + proceso.toString() + " ha FINALIZADO");
-			
 			listaProcesosEjecutando.remove(proceso);
 			mostrarInformacionEstados();
-			//Thread.sleep(100);
 			return true;
 		}
 		return false;
@@ -363,15 +346,12 @@ public class Ejecucion extends JFrame {
 			if (ciclosDelProcesador != 0) {
 				cicloActual++;
 				n++;
-				
 				procesoNuevo();
 				estadoNuevo_Listo();
 				estadoListo_Ejecucion();
-				
-				
+				actualizarInformacion();
 				System.out.println("Ciclo #"+ n);
 				Thread.sleep(300);
-				
 				if((i = buscarPrioridad(1, listaProcesosEjecutando)) != -1){//lo importante es buscar la prioridad mayor y ejecutar ese proceso
 					if(!EstadoEjecucion_Terminado(listaProcesosEjecutando.get(i))) {//determinará si el proceso ha finalizado
 						if(!estadoEjecucion_Bloqueado(listaProcesosEjecutando.get(i).getInstrucionBloqueo(), listaProcesosEjecutando.get(i).getIdentificadorProceso())) {//determinará si la ultima instruccion es una instruccion de bloqueo
@@ -396,6 +376,7 @@ public class Ejecucion extends JFrame {
 									Thread.sleep(100);
 									System.out.println("se leyó la instruccion: " + listaProcesosEjecutando.get(i).getInstruccionesLeidas() + " del proceso: " + listaProcesosEjecutando.get(i).toString());
 									mostrarInformacionEstados();
+									actualizarInformacion();
 								}
 							}
 						}
@@ -410,12 +391,14 @@ public class Ejecucion extends JFrame {
 										Thread.sleep(100);
 										System.out.println("se leyó la instruccion: " + listaProcesosEjecutando.get(i).getInstruccionesLeidas() + " del proceso: " + listaProcesosEjecutando.get(i).toString());
 										mostrarInformacionEstados();
+										actualizarInformacion();
 									}
 								}
 							}
 						}else {
 							estadoListo_Ejecucion();
 							mostrarInformacionEstados();
+							actualizarInformacion();
 						}
 					}
 				}
@@ -426,6 +409,7 @@ public class Ejecucion extends JFrame {
 					estadoBloqueado_Listo(listaProcesosBloqueado.get(j).getIdentificadorProceso());
 					Thread.sleep(100);
 					mostrarInformacionEstados();
+					actualizarInformacion();
 				}
 			
 			}
@@ -454,11 +438,6 @@ public class Ejecucion extends JFrame {
 			escribirBloqueados.writeObject(listaProcesosBloqueado);
 			escribirTerminados.writeObject(listaProcesosTerminado);
 			//cerrado de flujo
-			escribirNuevos.close();
-			escribirListos.close();
-			escribirEjecutando.close();
-			escribirBloqueados.close();
-			escribirTerminados.close();
 		
 		}catch(Exception e){
 			
@@ -575,7 +554,7 @@ public class Ejecucion extends JFrame {
 		lblProceso.setBounds(10, 153, 65, 14);
 		panelDetalle.add(lblProceso);
 		
-		JLabel lblEstadoActual = new JLabel("Estado Actual:");
+		JLabel lblEstadoActual = new JLabel("");
 		lblEstadoActual.setFont(new Font("Times New Roman", Font.PLAIN, 11));
 		lblEstadoActual.setBounds(10, 207, 70, 14);
 		panelDetalle.add(lblEstadoActual);
@@ -685,17 +664,12 @@ public class Ejecucion extends JFrame {
 		setVisible(true);
 	}
 	
-	public void mostrarInformacionEstados(){//echarle un ojo despues
+	public void mostrarInformacionEstados(){//
 		txtAInformacionEstadoNuevo.setText(concatenarLista(listaProcesosNuevo));
-		lblRespuestaEstadoActual.setText("Nuevo");
 		txtAInformacionEstadoListo.setText(concatenarLista(listaProcesosListo));
-		lblRespuestaEstadoActual.setText("Listo");
 		txtAInformacionEstadoEjecucion.setText(concatenarLista(listaProcesosEjecutando));
-		lblRespuestaEstadoActual.setText("Ejecución");
 		txtAInformacionEstadoBloqueado.setText(concatenarLista(listaProcesosBloqueado));
-		lblRespuestaEstadoActual.setText("Bloqueado");
 		txtAInformacionEstadoTerminado.setText(concatenarLista(listaProcesosTerminado));
-		lblRespuestaEstadoActual.setText("Terminado");
 	}
 	
 	public void mostrarInformacionEstados(int numeroInstruccion, String NombreProceso, String instruccionBloqueo){//echarle un ojo despues
